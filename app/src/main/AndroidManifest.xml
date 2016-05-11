@@ -2,12 +2,44 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.huangzj.multimap">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+
     <application
-        android:allowBackup="true"
+        android:name=".App"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:label="@string/app_name">
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="UAwpVqrMKMgjcEy7GAQkuZhyVdQl13WR" />
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="db49bc3232b16669eb15da4a2a467a12" />
+
+        <!--
+         在android4.0以上系统中的 Activity加上下面这句，可以支持地图横竖屏切换
+         android:configChanges="orientation|keyboardHidden|screenSize"
+                               例如：
+         <activity
+            android:name=".basic.BasicMapActivity"
+            android:label="@string/basic_map"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        -->
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -15,6 +47,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

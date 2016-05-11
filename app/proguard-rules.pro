@@ -18,3 +18,7 @@
 -keep class com.baidu.** {*;}
 -keep class vi.com.** {*;}
 -dontwarn com.baidu.**
+
+-keep   class com.amap.api.mapcore.**{*;}
+-keep   class com.amap.api.maps.**{*;}
+-keep   class com.autonavi.amap.mapcore.*{*;}
