@@ -1,79 +1,92 @@
 package com.huangzj.multimap;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.RelativeLayout;
 
-import com.baidu.mapapi.map.BaiduMapOptions;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.model.LatLng;
+import com.huangzj.multimap.map.BaseMapManager;
+import com.huangzj.multimap.map.MapManager;
+import com.huangzj.multimap.map.MapOptions;
+import com.huangzj.multimap.map.MapUISettings;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 
 public class MainActivity extends Activity {
 
-    private MapView baiduMapView;
+    @Bind(R.id.map_view)
+    RelativeLayout mapView;
 
-    private com.amap.api.maps.MapView aMapView;
+    private Bundle savedInstanceState;
+
+    private MapManager mapManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setBaiMap();
-//        setAMap(savedInstanceState);
-    }
-
-    private void setAMap(Bundle savedInstanceState) {
+        this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.activity_main);
-        aMapView = (com.amap.api.maps.MapView) findViewById(R.id.map);
-        aMapView.onCreate(savedInstanceState);// 此方法必须重写
+        ButterKnife.bind(this);
+        mapManager = new MapManager(this);
+
+        initMap();
     }
 
-    private void setBaiMap() {
-        Intent intent = getIntent();
-        if (intent.hasExtra("x") && intent.hasExtra("y")) {
-            // 当用intent参数时，设置中心点为指定点
-            Bundle b = intent.getExtras();
-            LatLng p = new LatLng(b.getDouble("y"), b.getDouble("x"));
-            baiduMapView = new MapView(this,
-                    new BaiduMapOptions().mapStatus(new MapStatus.Builder()
-                            .target(p).build()));
+    private void initMap() {
+        if (mapManager.getCurrentMapType() == MapManager.MAP_TYPE_BAIDU) {
+            mapManager.setMapView(mapView, MapManager.MAP_TYPE_AMAP);
+            mapManager.onCreate(savedInstanceState);
         } else {
-            baiduMapView = new MapView(this, new BaiduMapOptions());
+            mapManager.setMapView(mapView, MapManager.MAP_TYPE_BAIDU);
         }
 
-        setContentView(baiduMapView);
+        MapUISettings mapUISettings = mapManager.getUISettings();
+        mapUISettings.setAllGesturesEnabled(true);
+        mapUISettings.setMyLocationButtonEnabled(true);
+        mapUISettings.setScaleControlsEnabled(true);
+        mapUISettings.setZoomControlsEnabled(false);
+        mapUISettings.setCompassEnabled(true);
+        mapUISettings.setLogoPosition(MapOptions.LOGO_POSITION_BOTTOM_CENTER);
+        mapUISettings.setZoomPosition(MapOptions.ZOOM_POSITION_RIGHT_CENTER);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // activity 暂停时同时暂停地图控件
-        if (baiduMapView != null) baiduMapView.onPause();
-
-        if (aMapView != null) aMapView.onPause();
+        mapManager.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // activity 恢复时同时恢复地图控件
-        if (baiduMapView != null) baiduMapView.onResume();
-
-        if (aMapView != null) aMapView.onResume();
+        mapManager.onResume();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // activity 销毁时同时销毁地图控件
-        if (baiduMapView != null) baiduMapView.onDestroy();
-
-        if (aMapView != null) aMapView.onDestroy();
+        mapManager.onDestroy();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    @OnClick({R.id.change_map, R.id.add_mark, R.id.change_map_mode})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.change_map:
+                initMap();
+                break;
+            case R.id.add_mark:
+                break;
+            case R.id.change_map_mode:
+                if (mapManager.getMapMode() == MapOptions.MAP_SATELLITE) {
+                    mapManager.setMapMode(MapOptions.MAP_NORMAL);
+                } else {
+                    mapManager.setMapMode(MapOptions.MAP_SATELLITE);
+                }
+                break;
+        }
     }
+
 }
