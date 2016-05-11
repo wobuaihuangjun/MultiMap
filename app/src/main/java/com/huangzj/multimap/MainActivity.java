@@ -43,6 +43,10 @@ public class MainActivity extends Activity {
             mapManager.setMapView(mapView, MapManager.MAP_TYPE_BAIDU);
         }
 
+        initUISettings();
+    }
+
+    private void initUISettings() {
         MapUISettings mapUISettings = mapManager.getUISettings();
         mapUISettings.setAllGesturesEnabled(true);
         mapUISettings.setMyLocationButtonEnabled(true);

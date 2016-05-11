@@ -63,8 +63,41 @@ public class MapManager extends BaseMapManager {
         uiSettings.init(currentMapType, aMap, baiduMap);
     }
 
+    /**
+     * 获取地图ui控制器
+     *
+     * @return MapUISettings
+     */
     public MapUISettings getUISettings() {
         return this.uiSettings;
+    }
+
+    /**
+     * 设置是否允许定位图层
+     */
+    public void setMyLocationEnabled(boolean enabled) {
+        if (currentMapType == MAP_TYPE_AMAP) {
+            aMap.setMyLocationEnabled(enabled);
+        } else if (currentMapType == MAP_TYPE_BAIDU) {
+            baiduMap.setMyLocationEnabled(enabled);
+        } else {
+            throw new IllegalStateException("map view not init!");
+        }
+    }
+
+    /**
+     * 获取是否允许定位图层
+     *
+     * @return 是否允许定位图层
+     */
+    public boolean isMyLocationEnabled() {
+        if (currentMapType == MAP_TYPE_AMAP) {
+            return aMap.isMyLocationEnabled();
+        } else if (currentMapType == MAP_TYPE_BAIDU) {
+            return baiduMap.isMyLocationEnabled();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -94,5 +127,7 @@ public class MapManager extends BaseMapManager {
             throw new IllegalStateException("map view not init!");
         }
     }
+
+
 
 }
