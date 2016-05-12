@@ -1,7 +1,5 @@
 package com.huangzj.multimap.map;
 
-import android.graphics.Point;
-
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
 import com.baidu.mapapi.map.BaiduMap;
@@ -267,17 +265,6 @@ public class MapUISettings {
             return MapOptions.LOGO_POSITION_BOTTOM_RIGHT;
         } else {
             return MapOptions.UNKNOWN;
-        }
-    }
-
-    /**
-     * 设置指南针的位置，百度地图模式下可用
-     *
-     * @param point
-     */
-    public void setCompassPosition(Point point) {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
-            baiduMap.getUiSettings().setCompassPosition(point);
         }
     }
 }

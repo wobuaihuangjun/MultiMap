@@ -59,8 +59,12 @@ public class MapManager extends BaseMapManager {
         } else {
             throw new IllegalArgumentException("unknown map type!");
         }
+    }
 
+    @Override
+    protected void mapChanged() {
         uiSettings.init(currentMapType, aMap, baiduMap);
+
     }
 
     /**
@@ -127,7 +131,6 @@ public class MapManager extends BaseMapManager {
             throw new IllegalStateException("map view not init!");
         }
     }
-
 
 
 }

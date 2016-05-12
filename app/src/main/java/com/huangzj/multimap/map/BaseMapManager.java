@@ -5,13 +5,14 @@ import android.os.Bundle;
 import com.amap.api.maps.AMap;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
+import com.huangzj.multimap.map.location.MapLocationClient;
 
 /**
  * 地图管理的基类
  * <p/>
  * Created by hzj on 2016/5/11.
  */
-public class BaseMapManager {
+public abstract class BaseMapManager {
 
     protected MapView baiduMapView;
     protected BaiduMap baiduMap;
@@ -34,6 +35,11 @@ public class BaseMapManager {
         return currentMapType;
     }
 
+    /**
+     * 地图切换了
+     */
+    protected abstract void mapChanged();
+
     protected int convertAMapMode(int type) {
         if (type == MapOptions.MAP_SATELLITE) {
             return AMap.MAP_TYPE_SATELLITE;
@@ -50,7 +56,7 @@ public class BaseMapManager {
         }
     }
 
-    protected int getAMapMode(){
+    protected int getAMapMode() {
         if (AMap.MAP_TYPE_SATELLITE == aMap.getMapType()) {
             return MapOptions.MAP_SATELLITE;
         } else {
@@ -58,7 +64,7 @@ public class BaseMapManager {
         }
     }
 
-    protected int getBaiduMode(){
+    protected int getBaiduMode() {
         if (BaiduMap.MAP_TYPE_SATELLITE == baiduMap.getMapType()) {
             return MapOptions.MAP_SATELLITE;
         } else {
