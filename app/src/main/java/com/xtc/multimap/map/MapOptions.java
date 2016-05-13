@@ -1,4 +1,4 @@
-package com.huangzj.multimap.map;
+package com.xtc.multimap.map;
 
 /**
  * 地图常量

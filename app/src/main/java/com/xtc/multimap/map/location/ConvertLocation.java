@@ -1,4 +1,4 @@
-package com.huangzj.multimap.map.location;
+package com.xtc.multimap.map.location;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClientOption;

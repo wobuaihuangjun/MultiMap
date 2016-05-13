@@ -1,4 +1,4 @@
-package com.huangzj.multimap.map.location;
+package com.xtc.multimap.map.location;
 
 /**
  * 配置定位SDK各配置参数，比如定位模式、定位时间间隔、坐标系类型等

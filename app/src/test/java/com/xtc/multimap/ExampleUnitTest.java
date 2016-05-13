@@ -1,4 +1,4 @@
-package com.huangzj.multimap;
+package com.xtc.multimap;
 
 import org.junit.Test;
 

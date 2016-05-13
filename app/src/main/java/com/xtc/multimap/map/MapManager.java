@@ -1,4 +1,4 @@
-package com.huangzj.multimap.map;
+package com.xtc.multimap.map;
 
 import android.content.Context;
 import android.view.ViewGroup;

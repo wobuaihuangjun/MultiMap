@@ -1,4 +1,4 @@
-package com.huangzj.multimap.map.location;
+package com.xtc.multimap.map.location;
 
 /**
  * 定位结果实体

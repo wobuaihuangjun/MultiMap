@@ -1,4 +1,4 @@
-package com.huangzj.multimap;
+package com.xtc.multimap;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,13 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.huangzj.multimap.map.MapManager;
-import com.huangzj.multimap.map.MapOptions;
-import com.huangzj.multimap.map.MapUISettings;
-import com.huangzj.multimap.map.location.MapLocation;
-import com.huangzj.multimap.map.location.MapLocationClient;
-import com.huangzj.multimap.map.location.MapLocationListener;
-import com.huangzj.multimap.map.location.MapLocationOption;
+import com.xtc.multimap.map.MapManager;
+import com.xtc.multimap.map.MapOptions;
+import com.xtc.multimap.map.MapUISettings;
+import com.xtc.multimap.map.location.MapLocation;
+import com.xtc.multimap.map.location.MapLocationClient;
+import com.xtc.multimap.map.location.MapLocationListener;
+import com.xtc.multimap.map.location.MapLocationOption;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

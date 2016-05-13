@@ -1,10 +1,12 @@
-package com.huangzj.multimap.map;
+package com.xtc.multimap.map;
 
 import android.os.Bundle;
 
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.model.CameraPosition;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
+import com.xtc.multimap.map.location.Map;
 
 /**
  * 地图管理的基类
@@ -122,4 +124,69 @@ public abstract class BaseMapManager {
 
         }
     }
+
+//    public final void moveCamera(CameraUpdate var1) {
+//    }
+//
+//    public final void animateCamera(CameraUpdate var1) {
+//    }
+//
+//    public final void animateCamera(CameraUpdate var1, AMap.CancelableCallback var2) {
+//    }
+//
+//    public final void animateCamera(CameraUpdate var1, long var2, AMap.CancelableCallback var4) {
+//    }
+
+    public final void setOnCameraChangeListener(Map.OnCameraChangeListener listener) {
+        if(listener == null){
+            return;
+        }
+//        if (bdMap != null) {
+//            bdMap.setOnCa
+//        }
+//        if (aMap != null){
+//            aMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
+//                @Override
+//                public void onCameraChange(CameraPosition cameraPosition) {
+//                    listener.onCameraChange();
+//                }
+//
+//                @Override
+//                public void onCameraChangeFinish(CameraPosition cameraPosition) {
+//                    listener.onCameraChangeFinish();
+//                }
+//            });
+//        }
+    }
+
+    public final void setOnMapClickListener(Map.OnMapClickListener var1) {
+    }
+
+    public final void setOnMapTouchListener(Map.OnMapTouchListener var1) {
+    }
+
+    public final void setOnPOIClickListener(Map.OnPOIClickListener var1) {
+    }
+
+    public final void setOnMyLocationChangeListener(Map.OnMyLocationChangeListener var1) {
+    }
+
+    public final void setOnMapLongClickListener(Map.OnMapLongClickListener var1) {
+    }
+
+    public final void setOnMarkerClickListener(Map.OnMarkerClickListener var1) {
+    }
+
+    public final void setOnPolylineClickListener(Map.OnPolylineClickListener var1) {
+    }
+
+    public final void setOnMarkerDragListener(Map.OnMarkerDragListener var1) {
+    }
+
+    public final void setOnInfoWindowClickListener(Map.OnInfoWindowClickListener var1) {
+    }
+
+    public final void setOnMapLoadedListener(Map.OnMapLoadedListener var1) {
+    }
+
 }

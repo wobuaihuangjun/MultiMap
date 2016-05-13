@@ -1,4 +1,4 @@
-package com.huangzj.multimap.map;
+package com.xtc.multimap.map;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
