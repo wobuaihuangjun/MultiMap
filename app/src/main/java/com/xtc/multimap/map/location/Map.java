@@ -3,11 +3,11 @@ package com.xtc.multimap.map.location;
 import android.location.Location;
 import android.view.MotionEvent;
 
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.Poi;
 import com.amap.api.maps.model.Polyline;
+import com.xtc.multimap.map.LatLng;
 import com.xtc.multimap.map.MapStatus;
+import com.xtc.multimap.map.Marker;
+import com.xtc.multimap.map.Poi;
 
 /**
  * 地图事件接口
@@ -36,10 +36,10 @@ public class Map {
         void onMapLongClick(LatLng var1);
     }
 
-    public interface OnCameraChangeListener {
-        void onCameraChange(MapStatus var1);
+    public interface OnMapStatusChangeListener {
+        void onMapStatusChange(MapStatus var1);
 
-        void onCameraChangeFinish(MapStatus var1);
+        void onMapStatusChangeFinish(MapStatus var1);
     }
 
     public interface OnMarkerClickListener {

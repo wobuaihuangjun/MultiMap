@@ -7,21 +7,17 @@ package com.xtc.multimap.map;
  */
 public class LatLng {
 
-    private double latitude;//纬度
+    public double latitude;//纬度
 
-    private double longitude;//经度
+    public double longitude;//经度
+
+    public LatLng() {
+
+    }
 
     public LatLng(double longitude, double latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
     }
 
     @Override
