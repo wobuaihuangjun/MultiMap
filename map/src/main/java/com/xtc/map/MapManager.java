@@ -1,4 +1,4 @@
-package com.xtc.multimap.map;
+package com.xtc.map;
 
 import android.content.Context;
 import android.view.ViewGroup;

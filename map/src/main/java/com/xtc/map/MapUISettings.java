@@ -1,4 +1,4 @@
-package com.xtc.multimap.map;
+package com.xtc.map;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;

@@ -1,4 +1,4 @@
-package com.xtc.multimap.map;
+package com.xtc.map;
 
 /**
  * 地图常量

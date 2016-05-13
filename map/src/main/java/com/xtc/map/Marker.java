@@ -1,4 +1,4 @@
-package com.xtc.multimap.map;
+package com.xtc.map;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;

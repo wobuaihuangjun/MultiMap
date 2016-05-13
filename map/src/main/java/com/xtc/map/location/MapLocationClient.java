@@ -1,4 +1,4 @@
-package com.xtc.multimap.map.location;
+package com.xtc.map.location;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
-import com.xtc.multimap.map.MapManager;
+import com.xtc.map.MapManager;
 
 /**
  * 定位服务类

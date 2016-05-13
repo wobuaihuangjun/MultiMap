@@ -46,7 +46,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize" />
         -->
 
-        <activity android:name="com.xtc.multimap.MainActivity">
+        <activity android:name=".demo.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -54,6 +54,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".demo.SimpleMap" />
+        <activity android:name=".demo.MapEventListener" />
+        <activity android:name=".demo.MapLocation" />
     </application>
 
 </manifest>

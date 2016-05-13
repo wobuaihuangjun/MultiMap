@@ -1,4 +1,4 @@
-package com.xtc.multimap.map.location;
+package com.xtc.map.location;
 
 /**
  * 定位结果实体

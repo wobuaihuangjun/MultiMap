@@ -1,13 +1,13 @@
-package com.xtc.multimap.map.location;
+package com.xtc.map.location;
 
 import android.location.Location;
 import android.view.MotionEvent;
 
 import com.amap.api.maps.model.Polyline;
-import com.xtc.multimap.map.LatLng;
-import com.xtc.multimap.map.MapStatus;
-import com.xtc.multimap.map.Marker;
-import com.xtc.multimap.map.Poi;
+import com.xtc.map.LatLng;
+import com.xtc.map.MapStatus;
+import com.xtc.map.Marker;
+import com.xtc.map.Poi;
 
 /**
  * 地图事件接口

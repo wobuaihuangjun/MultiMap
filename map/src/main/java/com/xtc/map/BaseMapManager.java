@@ -1,4 +1,4 @@
-package com.xtc.multimap.map;
+package com.xtc.map;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +11,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
-import com.xtc.multimap.map.location.Map;
+import com.xtc.map.location.Map;
 
 /**
  * 地图管理的基类
@@ -180,7 +180,7 @@ public abstract class BaseMapManager {
         if (bdMap != null) {
             bdMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
                 @Override
-                public void onMapClick(com.baidu.mapapi.model.LatLng latLng) {
+                public void onMapClick(LatLng latLng) {
                     listener.onMapClick(ConvertUtil.convertBdLatLng(latLng));
                 }
 

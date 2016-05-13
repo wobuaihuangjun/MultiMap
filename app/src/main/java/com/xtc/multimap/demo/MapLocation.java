@@ -1,4 +1,4 @@
-package com.xtc.multimap;
+package com.xtc.multimap.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,22 +6,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.xtc.multimap.map.MapManager;
-import com.xtc.multimap.map.MapOptions;
-import com.xtc.multimap.map.MapUISettings;
-import com.xtc.multimap.map.location.MapLocation;
-import com.xtc.multimap.map.location.MapLocationClient;
-import com.xtc.multimap.map.location.MapLocationListener;
-import com.xtc.multimap.map.location.MapLocationOption;
+import com.xtc.multimap.R;
+import com.xtc.map.MapManager;
+import com.xtc.map.location.MapLocationClient;
+import com.xtc.map.location.MapLocationListener;
+import com.xtc.map.location.MapLocationOption;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
-public class MainActivity extends Activity {
-
-    private static final String TAG = "MainActivity";
+public class MapLocation extends Activity {
+    private static final String TAG = "MapLocation";
 
     @Bind(R.id.map_view)
     RelativeLayout mapView;
@@ -34,11 +30,30 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.savedInstanceState = savedInstanceState;
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.simple_map);
         ButterKnife.bind(this);
         mapManager = new MapManager(this);
 
         initMap();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapManager.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapManager.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapLocationClient.stopLocation();
+        mapManager.onDestroy();
     }
 
     private void initMap() {
@@ -48,9 +63,6 @@ public class MainActivity extends Activity {
         } else {
             mapManager.setMapView(mapView, MapManager.MAP_TYPE_BD);
         }
-
-        initUISettings();
-
         startLocation();
     }
 
@@ -73,59 +85,19 @@ public class MainActivity extends Activity {
         mapLocationClient.startLocation();
     }
 
-    private void initUISettings() {
-        MapUISettings mapUISettings = mapManager.getUISettings();
-        mapUISettings.setAllGesturesEnabled(true);
-        mapUISettings.setMyLocationButtonEnabled(true);
-        mapUISettings.setScaleControlsEnabled(true);
-        mapUISettings.setZoomControlsEnabled(false);
-        mapUISettings.setCompassEnabled(true);
-        mapUISettings.setLogoPosition(MapOptions.LOGO_POSITION_BOTTOM_CENTER);
-        mapUISettings.setZoomPosition(MapOptions.ZOOM_POSITION_RIGHT_CENTER);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mapManager.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mapManager.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapLocationClient.stopLocation();
-        mapManager.onDestroy();
-    }
-
-    @OnClick({R.id.change_map, R.id.add_mark, R.id.change_map_mode})
+    @OnClick({R.id.change_map})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.change_map:
                 initMap();
-                break;
-            case R.id.add_mark:
-                break;
-            case R.id.change_map_mode:
-                if (mapManager.getMapMode() == MapOptions.MAP_SATELLITE) {
-                    mapManager.setMapMode(MapOptions.MAP_NORMAL);
-                } else {
-                    mapManager.setMapMode(MapOptions.MAP_SATELLITE);
-                }
                 break;
         }
     }
 
     MapLocationListener locationListener = new MapLocationListener() {
         @Override
-        public void onLocationChanged(MapLocation mapLocation) {
+        public void onLocationChanged(com.xtc.map.location.MapLocation mapLocation) {
             Log.i(TAG, mapLocation.toString());
         }
     };
-
 }
