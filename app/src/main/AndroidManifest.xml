@@ -25,10 +25,16 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="UAwpVqrMKMgjcEy7GAQkuZhyVdQl13WR" />
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="db49bc3232b16669eb15da4a2a467a12" />
+        <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
+        <service android:name="com.amap.api.location.APSService" />
 
         <!--
          在android4.0以上系统中的 Activity加上下面这句，可以支持地图横竖屏切换

@@ -23,7 +23,7 @@ public class MapUISettings {
     }
 
     void setBaiduMap(BaiduMap baiduMap) {
-        this.currentMapType = MapManager.MAP_TYPE_BAIDU;
+        this.currentMapType = MapManager.MAP_TYPE_BD;
         this.baiduMap = baiduMap;
     }
 
@@ -47,7 +47,7 @@ public class MapUISettings {
      * 设置是否允许缩放手势
      */
     public void setZoomGesturesEnabled(boolean enabled) {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
             baiduMap.getUiSettings().setZoomGesturesEnabled(enabled);
         } else {
             aMap.getUiSettings().setZoomGesturesEnabled(enabled);
@@ -55,7 +55,7 @@ public class MapUISettings {
     }
 
     public boolean isZoomGesturesEnabled() {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
             return baiduMap.getUiSettings().isZoomGesturesEnabled();
         } else {
             return aMap.getUiSettings().isZoomGesturesEnabled();
@@ -66,7 +66,7 @@ public class MapUISettings {
      * 设置是否允许旋转手势
      */
     public void setRotateGesturesEnabled(boolean enabled) {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
             baiduMap.getUiSettings().setRotateGesturesEnabled(enabled);
         } else {
             aMap.getUiSettings().setRotateGesturesEnabled(enabled);
@@ -74,7 +74,7 @@ public class MapUISettings {
     }
 
     public boolean isRotateGesturesEnabled() {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
             return baiduMap.getUiSettings().isRotateGesturesEnabled();
         } else {
             return aMap.getUiSettings().isRotateGesturesEnabled();
@@ -85,7 +85,7 @@ public class MapUISettings {
      * 设置是否允许拖拽手势
      */
     public void setScrollGesturesEnabled(boolean enabled) {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
             baiduMap.getUiSettings().setScrollGesturesEnabled(enabled);
         } else {
             aMap.getUiSettings().setScrollGesturesEnabled(enabled);
@@ -93,7 +93,7 @@ public class MapUISettings {
     }
 
     public boolean isScrollGesturesEnabled() {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
             return baiduMap.getUiSettings().isScrollGesturesEnabled();
         } else {
             return aMap.getUiSettings().isScrollGesturesEnabled();
@@ -104,7 +104,7 @@ public class MapUISettings {
      * 设置是否允许通过手势倾斜地图
      */
     public void setTiltGesturesEnabled(boolean enabled) {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
             baiduMap.getUiSettings().setOverlookingGesturesEnabled(enabled);
         } else {
             aMap.getUiSettings().setTiltGesturesEnabled(enabled);
@@ -112,7 +112,7 @@ public class MapUISettings {
     }
 
     public boolean isTiltGesturesEnabled() {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
             return baiduMap.getUiSettings().isOverlookingGesturesEnabled();
         } else {
             return aMap.getUiSettings().isTiltGesturesEnabled();
@@ -123,7 +123,7 @@ public class MapUISettings {
      * 设置是否允许指南针
      */
     public void setCompassEnabled(boolean enabled) {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
             baiduMap.getUiSettings().setCompassEnabled(enabled);
         } else {
             aMap.getUiSettings().setCompassEnabled(enabled);
@@ -131,7 +131,7 @@ public class MapUISettings {
     }
 
     public boolean isCompassEnabled() {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
             return baiduMap.getUiSettings().isCompassEnabled();
         } else {
             return aMap.getUiSettings().isCompassEnabled();

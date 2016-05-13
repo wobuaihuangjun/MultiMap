@@ -23,7 +23,7 @@ public class MapManager extends BaseMapManager {
     /**
      * 百度地图
      */
-    public static final int MAP_TYPE_BAIDU = 2;
+    public static final int MAP_TYPE_BD = 2;
 
 
     private Context context;
@@ -50,21 +50,21 @@ public class MapManager extends BaseMapManager {
             mapLayout.removeAllViews();
             mapLayout.addView(aMapView);
             releaseBaiduMap();
-        } else if (MAP_TYPE_BAIDU == type) {
-            baiduMapView = new MapView(context, new BaiduMapOptions());
-            baiduMap = baiduMapView.getMap();
+        } else if (MAP_TYPE_BD == type) {
+            bdMapView = new MapView(context, new BaiduMapOptions());
+            bdMap = bdMapView.getMap();
             mapLayout.removeAllViews();
-            mapLayout.addView(baiduMapView);
+            mapLayout.addView(bdMapView);
             releaseAMap();
         } else {
             throw new IllegalArgumentException("unknown map type!");
         }
+        mapChanged();
     }
 
     @Override
     protected void mapChanged() {
-        uiSettings.init(currentMapType, aMap, baiduMap);
-
+        uiSettings.init(currentMapType, aMap, bdMap);
     }
 
     /**
@@ -82,8 +82,8 @@ public class MapManager extends BaseMapManager {
     public void setMyLocationEnabled(boolean enabled) {
         if (currentMapType == MAP_TYPE_AMAP) {
             aMap.setMyLocationEnabled(enabled);
-        } else if (currentMapType == MAP_TYPE_BAIDU) {
-            baiduMap.setMyLocationEnabled(enabled);
+        } else if (currentMapType == MAP_TYPE_BD) {
+            bdMap.setMyLocationEnabled(enabled);
         } else {
             throw new IllegalStateException("map view not init!");
         }
@@ -97,8 +97,8 @@ public class MapManager extends BaseMapManager {
     public boolean isMyLocationEnabled() {
         if (currentMapType == MAP_TYPE_AMAP) {
             return aMap.isMyLocationEnabled();
-        } else if (currentMapType == MAP_TYPE_BAIDU) {
-            return baiduMap.isMyLocationEnabled();
+        } else if (currentMapType == MAP_TYPE_BD) {
+            return bdMap.isMyLocationEnabled();
         } else {
             return false;
         }
@@ -110,8 +110,8 @@ public class MapManager extends BaseMapManager {
     public void setMapMode(int mapMode) {
         if (currentMapType == MAP_TYPE_AMAP) {
             aMap.setMapType(convertAMapMode(mapMode));
-        } else if (currentMapType == MAP_TYPE_BAIDU) {
-            baiduMap.setMapType(convertBaiduMapMode(mapMode));
+        } else if (currentMapType == MAP_TYPE_BD) {
+            bdMap.setMapType(convertBaiduMapMode(mapMode));
         } else {
             throw new IllegalStateException("map view not init!");
         }
@@ -125,7 +125,7 @@ public class MapManager extends BaseMapManager {
     public int getMapMode() {
         if (currentMapType == MAP_TYPE_AMAP) {
             return getAMapMode();
-        } else if (currentMapType == MAP_TYPE_BAIDU) {
+        } else if (currentMapType == MAP_TYPE_BD) {
             return getBaiduMode();
         } else {
             throw new IllegalStateException("map view not init!");

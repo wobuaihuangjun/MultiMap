@@ -2,13 +2,17 @@ package com.huangzj.multimap;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.huangzj.multimap.map.BaseMapManager;
 import com.huangzj.multimap.map.MapManager;
 import com.huangzj.multimap.map.MapOptions;
 import com.huangzj.multimap.map.MapUISettings;
+import com.huangzj.multimap.map.location.MapLocation;
+import com.huangzj.multimap.map.location.MapLocationClient;
+import com.huangzj.multimap.map.location.MapLocationListener;
+import com.huangzj.multimap.map.location.MapLocationOption;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -16,6 +20,8 @@ import butterknife.OnClick;
 
 
 public class MainActivity extends Activity {
+
+    private static final String TAG = "MainActivity";
 
     @Bind(R.id.map_view)
     RelativeLayout mapView;
@@ -36,14 +42,35 @@ public class MainActivity extends Activity {
     }
 
     private void initMap() {
-        if (mapManager.getCurrentMapType() == MapManager.MAP_TYPE_BAIDU) {
+        if (mapManager.getCurrentMapType() == MapManager.MAP_TYPE_BD) {
             mapManager.setMapView(mapView, MapManager.MAP_TYPE_AMAP);
             mapManager.onCreate(savedInstanceState);
         } else {
-            mapManager.setMapView(mapView, MapManager.MAP_TYPE_BAIDU);
+            mapManager.setMapView(mapView, MapManager.MAP_TYPE_BD);
         }
 
         initUISettings();
+
+        startLocation();
+    }
+
+    private MapLocationClient mapLocationClient;
+
+    private void startLocation() {
+        mapManager.setMyLocationEnabled(true);
+        if (mapLocationClient != null) {
+            mapLocationClient.stopLocation();
+        }
+        mapLocationClient = new MapLocationClient(this, mapManager.getCurrentMapType());
+        mapLocationClient.setLocationListener(locationListener);
+        MapLocationOption option = new MapLocationOption();
+        option.setLocationMode(MapLocationOption.LocationMode.Hight_Accuracy);
+        option.setGpsFirst(true);
+        option.setOpenGps(true);
+        option.setNeedAddress(true);
+        option.setScanSpan(5000);
+        mapLocationClient.setLocationOption(option);
+        mapLocationClient.startLocation();
     }
 
     private void initUISettings() {
@@ -72,6 +99,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mapLocationClient.stopLocation();
         mapManager.onDestroy();
     }
 
@@ -92,5 +120,12 @@ public class MainActivity extends Activity {
                 break;
         }
     }
+
+    MapLocationListener locationListener = new MapLocationListener() {
+        @Override
+        public void onLocationChanged(MapLocation mapLocation) {
+            Log.i(TAG, mapLocation.toString());
+        }
+    };
 
 }

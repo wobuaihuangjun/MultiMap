@@ -5,6 +5,8 @@ import android.content.Context;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.huangzj.multimap.map.MapManager;
 
@@ -20,7 +22,7 @@ public class MapLocationClient {
 
     private MapLocationListener mapLocationListener;
 
-    private LocationClient baiduLocationClient;
+    private LocationClient bdLocationClient;
     private AMapLocationClient aMapLocationClient;
 
     /**
@@ -39,14 +41,11 @@ public class MapLocationClient {
     }
 
     private void init() {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
-            baiduLocationClient = new LocationClient(context);
-            aMapLocationClient.stopLocation();
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
+            bdLocationClient = new LocationClient(context);
         } else {
             aMapLocationClient = new AMapLocationClient(context);
-            baiduLocationClient.stop();
         }
-
     }
 
     /**
@@ -61,7 +60,11 @@ public class MapLocationClient {
             throw new IllegalArgumentException("listener参数不能为null");
         }
         mapLocationListener = listener;
-        aMapLocationClient.setLocationListener(aMapLocationListener);
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
+            bdLocationClient.registerLocationListener(bdLocationListener);
+        } else {
+            aMapLocationClient.setLocationListener(aMapLocationListener);
+        }
     }
 
     /**
@@ -70,8 +73,8 @@ public class MapLocationClient {
      * 地图切换后，需要重新设置
      */
     public void setLocationOption(MapLocationOption mapLocationOption) {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
-            baiduLocationClient.setLocOption(
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
+            bdLocationClient.setLocOption(
                     ConvertLocation.convertToBaiduLocationOption(mapLocationOption));
         } else {
             aMapLocationClient.setLocationOption(
@@ -80,29 +83,44 @@ public class MapLocationClient {
     }
 
     public void startLocation() {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
-            baiduLocationClient.start();
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
+            bdLocationClient.start();
         } else {
             aMapLocationClient.startLocation();
         }
     }
 
     public void stopLocation() {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
-            baiduLocationClient.stop();
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
+            bdLocationClient.stop();
         } else {
             aMapLocationClient.stopLocation();
         }
     }
 
     public MapLocation getLastKnownLocation() {
-        if (currentMapType == MapManager.MAP_TYPE_BAIDU) {
-            return ConvertLocation.convertBaiduLocation(baiduLocationClient.getLastKnownLocation());
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
+            return ConvertLocation.convertBaiduLocation(bdLocationClient.getLastKnownLocation());
         } else {
             return ConvertLocation.convertAMapLocation(aMapLocationClient.getLastKnownLocation());
         }
     }
 
+    /**
+     * 百度定位SDK监听函数
+     */
+    BDLocationListener bdLocationListener = new BDLocationListener() {
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            if (mapLocationListener != null) {
+                mapLocationListener.onLocationChanged(
+                        ConvertLocation.convertBaiduLocation(location));
+            }
+        }
+    };
+    /**
+     * 高德定位SDK监听函数
+     */
     private AMapLocationListener aMapLocationListener = new AMapLocationListener() {
         @Override
         public void onLocationChanged(AMapLocation aMapLocation) {

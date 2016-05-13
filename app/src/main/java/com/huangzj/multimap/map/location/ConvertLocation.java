@@ -4,7 +4,9 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClientOption;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.location.Poi;
+
+import java.util.List;
 
 /**
  * 定位信息转换
@@ -17,12 +19,11 @@ public class ConvertLocation {
      * 转换高德定位结果
      */
     public static MapLocation convertAMapLocation(AMapLocation aMapLocation) {
-        if (aMapLocation == null || aMapLocation.getErrorCode() != AMapLocation.LOCATION_SUCCESS) {
+        if (aMapLocation == null) {
             return null;
         }
         MapLocation mapLocation = new MapLocation();
-        mapLocation.setLocationType(aMapLocation.getLocationType());
-        mapLocation.setLocationDetail(aMapLocation.getLocationDetail());
+
         mapLocation.setAccuracy(aMapLocation.getAccuracy());
         mapLocation.setAddress(aMapLocation.getAddress());
         mapLocation.setPoiName(aMapLocation.getPoiName());
@@ -41,7 +42,32 @@ public class ConvertLocation {
         mapLocation.setAltitude(aMapLocation.getAltitude());
         mapLocation.setBearing(aMapLocation.getBearing());
 
-        mapLocation.setErrorCode();
+        mapLocation.setLocationDetail(aMapLocation.getLocationDetail());
+
+        int locType = aMapLocation.getLocationType();
+        if (locType == AMapLocation.LOCATION_TYPE_CELL) {
+            mapLocation.setLocationType(MapLocation.LOCATION_TYPE_CELL);
+        } else if (locType == AMapLocation.LOCATION_TYPE_GPS) {
+            mapLocation.setLocationType(MapLocation.LOCATION_TYPE_GPS);
+        } else if (locType == AMapLocation.LOCATION_TYPE_WIFI) {
+            mapLocation.setLocationType(MapLocation.LOCATION_TYPE_WIFI);
+        } else if (locType == AMapLocation.LOCATION_TYPE_SAME_REQ) {
+            mapLocation.setLocationType(MapLocation.LOCATION_TYPE_SAME_REQ);
+        } else if (locType == AMapLocation.LOCATION_TYPE_OFFLINE
+                || locType == AMapLocation.LOCATION_TYPE_FIX_CACHE) {
+            mapLocation.setLocationType(MapLocation.LOCATION_TYPE_OFFLINE);
+        } else {
+            mapLocation.setLocationType(MapLocation.LOCATION_TYPE_OFFLINE);
+        }
+
+        if (aMapLocation.getErrorCode() == AMapLocation.LOCATION_SUCCESS) {
+            // 定位成功
+            mapLocation.setErrorCode(MapLocation.SUCCESS);
+        } else {
+            mapLocation.setErrorCode(MapLocation.FAIL);
+        }
+
+
         return mapLocation;
     }
 
@@ -53,14 +79,8 @@ public class ConvertLocation {
             return null;
         }
         MapLocation mapLocation = new MapLocation();
-        mapLocation.setLocationType(bdLocation.getLocType());
-        mapLocation.setLocationDetail(bdLocation.getLocationDescribe());
         mapLocation.setAccuracy(bdLocation.getRadius());
         mapLocation.setAddress(bdLocation.getAddrStr());
-
-        // TODO: 2016/5/12 需要调整
-//        mapLocation.setPoiName(bdLocation.getPoiList());
-
         mapLocation.setCountry(bdLocation.getCountry());
         mapLocation.setProvince(bdLocation.getProvince());
         mapLocation.setCity(bdLocation.getCity());
@@ -74,7 +94,45 @@ public class ConvertLocation {
         mapLocation.setSpeed(bdLocation.getSpeed());
         mapLocation.setAltitude(bdLocation.getAltitude());
 
-        mapLocation.setErrorInfo();TypeGpsLocation  TypeNetWorkLocation TypeOffLineLocation
+        mapLocation.setLocationDetail(bdLocation.getLocationDescribe());
+
+        List<Poi> poiList = bdLocation.getPoiList();
+        if (poiList != null && poiList.size() > 0) {
+            mapLocation.setPoiName(poiList.get(0).getName());
+        }
+
+        int locType = bdLocation.getLocType();
+        if (locType == BDLocation.TypeGpsLocation) {
+            mapLocation.setLocationType(MapLocation.LOCATION_TYPE_GPS);
+        } else if (locType == BDLocation.TypeNetWorkLocation) {
+            String netLocationType = bdLocation.getNetworkLocationType();
+            if (netLocationType == null) {
+                // 没有获取到定位结果类型
+            } else if (netLocationType.contains("wf")) {
+                mapLocation.setLocationType(MapLocation.LOCATION_TYPE_WIFI);
+            } else if (netLocationType.contains("cl")) {
+                mapLocation.setLocationType(MapLocation.LOCATION_TYPE_CELL);
+            } else if (netLocationType.contains("ll")) {
+                mapLocation.setLocationType(MapLocation.LOCATION_TYPE_GPS);
+            } else {
+                // 未知的网络定位类型
+            }
+        } else if (locType == BDLocation.TypeOffLineLocation
+                || locType == BDLocation.TypeCacheLocation) {
+            mapLocation.setLocationType(MapLocation.LOCATION_TYPE_OFFLINE);
+        } else {
+            mapLocation.setLocationType(MapLocation.LOCATION_TYPE_OFFLINE);
+        }
+
+        if (BDLocation.TypeGpsLocation != bdLocation.getLocType()
+                || BDLocation.TypeNetWorkLocation != bdLocation.getLocType()
+                || BDLocation.TypeOffLineLocation != bdLocation.getLocType()) {
+            // 定位成功
+            mapLocation.setErrorCode(MapLocation.SUCCESS);
+        } else {
+            mapLocation.setErrorCode(MapLocation.FAIL);
+        }
+
         return mapLocation;
     }
 

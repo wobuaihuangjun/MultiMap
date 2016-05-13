@@ -5,7 +5,6 @@ import android.os.Bundle;
 import com.amap.api.maps.AMap;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
-import com.huangzj.multimap.map.location.MapLocationClient;
 
 /**
  * 地图管理的基类
@@ -14,8 +13,8 @@ import com.huangzj.multimap.map.location.MapLocationClient;
  */
 public abstract class BaseMapManager {
 
-    protected MapView baiduMapView;
-    protected BaiduMap baiduMap;
+    protected MapView bdMapView;
+    protected BaiduMap bdMap;
 
     protected com.amap.api.maps.MapView aMapView;
     protected AMap aMap;
@@ -65,7 +64,7 @@ public abstract class BaseMapManager {
     }
 
     protected int getBaiduMode() {
-        if (BaiduMap.MAP_TYPE_SATELLITE == baiduMap.getMapType()) {
+        if (BaiduMap.MAP_TYPE_SATELLITE == bdMap.getMapType()) {
             return MapOptions.MAP_SATELLITE;
         } else {
             return MapOptions.MAP_NORMAL;
@@ -83,7 +82,7 @@ public abstract class BaseMapManager {
      * activity暂停时同时暂停地图控件
      */
     public void onPause() {
-        if (baiduMapView != null) baiduMapView.onPause();
+        if (bdMapView != null) bdMapView.onPause();
 
         if (aMapView != null) aMapView.onPause();
     }
@@ -92,7 +91,7 @@ public abstract class BaseMapManager {
      * activity恢复时同时恢复地图控件
      */
     public void onResume() {
-        if (baiduMapView != null) baiduMapView.onResume();
+        if (bdMapView != null) bdMapView.onResume();
 
         if (aMapView != null) aMapView.onResume();
     }
@@ -101,16 +100,16 @@ public abstract class BaseMapManager {
      * activity销毁时同时销毁地图控件
      */
     public void onDestroy() {
-        if (baiduMapView != null) baiduMapView.onDestroy();
+        if (bdMapView != null) bdMapView.onDestroy();
 
         if (aMapView != null) aMapView.onDestroy();
     }
 
     protected void releaseBaiduMap() {
-        if (baiduMapView != null) {
-            baiduMapView.onDestroy();
-            baiduMapView = null;
-            baiduMap = null;
+        if (bdMapView != null) {
+            bdMapView.onDestroy();
+            bdMapView = null;
+            bdMap = null;
         }
 
     }

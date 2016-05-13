@@ -6,6 +6,37 @@ package com.huangzj.multimap.map.location;
  * Created by hzj on 2016/5/11.
  */
 public class MapLocation {
+    /**
+     * 定位失败
+     */
+    public static final int FAIL = 0;
+
+    /**
+     * 定位成功
+     */
+    public static final int SUCCESS = 1;
+
+    /**
+     * 定位结果类型：GPS定位结果 通过设备GPS定位模块返回的定位结果
+     */
+    public static final int LOCATION_TYPE_GPS = 1;
+
+    /**
+     * 定位结果类型：Wifi定位结果 属于网络定位，定位精度相对基站定位会更好
+     */
+    public static final int LOCATION_TYPE_WIFI = 4;
+    /**
+     * 定位结果类型：基站定位结果 属于网络定位
+     */
+    public static final int LOCATION_TYPE_CELL = 5;
+    /**
+     * 定位结果类型： 离线定位结果
+     */
+    public static final int LOCATION_TYPE_OFFLINE = 7;
+    /**
+     * 定位结果类型：前次定位结果 网络定位请求低于1秒、或两次定位之间设备位置变化非常小时返回，设备位移通过传感器感知
+     */
+    public static final int LOCATION_TYPE_SAME_REQ = 2;
 
     private int locationType;//定位结果来源
 
@@ -45,8 +76,6 @@ public class MapLocation {
     private float bearing;//方向角 单位：度 仅在AMapLocation.getProvider()是gps时有效
 
     private int errorCode;//错误码
-
-    private String errorInfo;//错误信息
 
     public int getLocationType() {
         return locationType;
@@ -208,11 +237,29 @@ public class MapLocation {
         this.errorCode = errorCode;
     }
 
-    public String getErrorInfo() {
-        return errorInfo;
-    }
-
-    public void setErrorInfo(String errorInfo) {
-        this.errorInfo = errorInfo;
+    @Override
+    public String toString() {
+        return "MapLocation{" +
+                "locationType=" + locationType +
+                ", locationDetail='" + locationDetail + '\'' +
+                ", accuracy=" + accuracy +
+                ", address='" + address + '\'' +
+                ", poiName='" + poiName + '\'' +
+                ", adCode='" + adCode + '\'' +
+                ", country='" + country + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", cityCode='" + cityCode + '\'' +
+                ", district='" + district + '\'' +
+                ", street='" + street + '\'' +
+                ", streetNum='" + streetNum + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", satellites=" + satellites +
+                ", speed=" + speed +
+                ", altitude=" + altitude +
+                ", bearing=" + bearing +
+                ", errorCode=" + errorCode +
+                '}';
     }
 }
