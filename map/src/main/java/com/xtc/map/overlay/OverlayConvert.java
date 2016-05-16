@@ -3,6 +3,7 @@ package com.xtc.map.overlay;
 import android.support.annotation.NonNull;
 
 import com.xtc.map.ConvertUtil;
+import com.xtc.map.LatLng;
 
 /**
  * OverlayOption转换
@@ -79,6 +80,54 @@ public class OverlayConvert {
         }
         if (options.flat != null) {
             bdOption.flat(options.flat);
+        }
+        return bdOption;
+    }
+
+    public static com.amap.api.maps.model.CircleOptions convertGdCircleOptions(@NonNull CircleOptions options) {
+        com.amap.api.maps.model.CircleOptions gdOption = new com.amap.api.maps.model.CircleOptions();
+        if (options.center != null) {
+            gdOption.center(ConvertUtil.convertToGdLatLng(options.center));
+        }
+        if (options.stroke != null) {
+            gdOption.strokeColor(options.stroke.color);
+            gdOption.strokeWidth(options.stroke.strokeWidth);
+        }
+        if (options.fillColor != null) {
+            gdOption.fillColor(options.fillColor);
+        }
+        if (options.radius != null) {
+            gdOption.radius(options.radius.intValue());
+        }
+        if (options.visible != null) {
+            gdOption.visible(options.visible);
+        }
+        if (options.zIndex != null) {
+            gdOption.zIndex(options.zIndex.intValue());
+        }
+        return gdOption;
+    }
+
+    public static com.baidu.mapapi.map.CircleOptions convertBdCircleOptions(@NonNull CircleOptions options) {
+        com.baidu.mapapi.map.CircleOptions bdOption = new com.baidu.mapapi.map.CircleOptions();
+        if (options.center != null) {
+            bdOption.center(ConvertUtil.convertToBdLatLng(options.center));
+        }
+        if (options.stroke != null) {
+            bdOption.stroke(new com.baidu.mapapi.map.Stroke(
+                    options.stroke.strokeWidth, options.stroke.color));
+        }
+        if (options.fillColor != null) {
+            bdOption.fillColor(options.fillColor);
+        }
+        if (options.radius != null) {
+            bdOption.radius(options.radius.intValue());
+        }
+        if (options.visible != null) {
+            bdOption.visible(options.visible);
+        }
+        if (options.zIndex != null) {
+            bdOption.zIndex(options.zIndex.intValue());
         }
         return bdOption;
     }

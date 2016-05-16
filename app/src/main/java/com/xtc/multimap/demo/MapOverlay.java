@@ -1,6 +1,7 @@
 package com.xtc.multimap.demo;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,8 +10,11 @@ import android.widget.RelativeLayout;
 import com.xtc.map.MapManager;
 import com.xtc.map.MapUISettings;
 import com.xtc.map.overlay.BitmapDescriptorFactory;
+import com.xtc.map.overlay.Circle;
+import com.xtc.map.overlay.CircleOptions;
 import com.xtc.map.overlay.Marker;
 import com.xtc.map.overlay.MarkerOptions;
+import com.xtc.map.overlay.Stroke;
 import com.xtc.multimap.R;
 
 import butterknife.Bind;
@@ -56,15 +60,30 @@ public class MapOverlay extends Activity {
         addMarker();
     }
 
-    private void addMarker() {
+    Marker marker;
+    Circle circle;
 
-        Marker marker = mapManager.addMarker(new MarkerOptions()
+    private void addMarker() {
+        if (marker != null) {
+            marker.remove();
+        }
+        marker = mapManager.addMarker(new MarkerOptions()
                 .position(mapManager.getMapStatus().target)
                 .title("好好学习")
                 .icon(BitmapDescriptorFactory.fromResource(this, R.drawable.icon_marka))
                 .draggable(true));
         marker.setRotate(90);// 设置marker旋转90度
         marker.showInfoWindow();// 设置默认显示一个infowinfow
+
+        if (circle != null) {
+            circle.remove();
+        }
+        circle = mapManager.addCircle(new CircleOptions()
+                .center(mapManager.getMapStatus().target)
+                .radius(4000.0)
+                .fillColor(Color.argb(150, 1, 1, 1))
+                .visible(true)
+                .stroke(new Stroke(Color.argb(255, 125, 135, 135), 5)));
     }
 
     @Override
@@ -92,6 +111,7 @@ public class MapOverlay extends Activity {
                 initMap();
                 break;
             case R.id.change_map_mode:
+                addMarker();
                 break;
         }
     }

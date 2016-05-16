@@ -15,11 +15,15 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 import com.xtc.map.location.Map;
+import com.xtc.map.overlay.Circle;
+import com.xtc.map.overlay.CircleOptions;
 import com.xtc.map.overlay.Marker;
 import com.xtc.map.overlay.MarkerOptions;
 import com.xtc.map.overlay.OverlayConvert;
 import com.xtc.map.status.MapStatus;
 import com.xtc.map.status.MapStatusUpdate;
+
+import java.util.UUID;
 
 /**
  * 地图管理的基类
@@ -121,8 +125,24 @@ public abstract class BaseMapManager {
         }
     }
 
-//    public final Circle addCircle(CircleOptions var1) {
-//    }
+    /**
+     * 添加圆形（circle）覆盖物到地图上。
+     *
+     * @param options 设置圆形初始化属性的CircleOptions对象
+     * @return 一个Circle对象。
+     */
+    public final Circle addCircle(CircleOptions options) {
+        if (currentMapType == MapManager.MAP_TYPE_AMAP) {
+            return new Circle(gdMap.addCircle(OverlayConvert.convertGdCircleOptions(options)));
+        } else {
+            com.baidu.mapapi.map.Circle circle = (com.baidu.mapapi.map.Circle) bdMap
+                    .addOverlay(OverlayConvert.convertBdCircleOptions(options));
+            Bundle bundle = new Bundle();
+            bundle.putString("id", UUIDUtil.getUUID());
+            circle.setExtraInfo(bundle);
+            return new Circle(circle);
+        }
+    }
 
     /**
      * 获取地图的当前状态
