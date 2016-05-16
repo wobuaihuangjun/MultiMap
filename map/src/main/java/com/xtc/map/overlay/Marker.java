@@ -1,10 +1,12 @@
-package com.xtc.map;
+package com.xtc.map.overlay;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.View;
 
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.xtc.map.ConvertUtil;
+import com.xtc.map.LatLng;
+
+import java.util.ArrayList;
 
 /**
  * 地图 Marker 覆盖物
@@ -53,43 +55,32 @@ public class Marker {
         }
     }
 
-    public void setIconFromAsset(String assetName) {
+    public void setIcon(BitmapDescriptor descriptor) {
         if (bdMarker != null) {
-            bdMarker.setIcon(BitmapDescriptorFactory.fromAsset(assetName));
+            bdMarker.setIcon(BitmapDescriptorFactory.fromBitmap(descriptor.bitmap));
         } else if (gdMarker != null) {
-            gdMarker.setIcon(com.amap.api.maps.model.BitmapDescriptorFactory.fromAsset(assetName));
+            gdMarker.setIcon(com.amap.api.maps.model.BitmapDescriptorFactory
+                    .fromBitmap(descriptor.bitmap));
         }
     }
 
-    public void setIconfromFilePath(String absolutePath) {
-        if (bdMarker != null) {
-            bdMarker.setIcon(BitmapDescriptorFactory.fromPath(absolutePath));
-        } else if (gdMarker != null) {
-            gdMarker.setIcon(com.amap.api.maps.model.BitmapDescriptorFactory.fromPath(absolutePath));
+    public void setIcons(ArrayList<BitmapDescriptor> descriptors) {
+        if (descriptors == null) {
+            return;
         }
-    }
-
-    public void setIconFromView(View view) {
         if (bdMarker != null) {
-            bdMarker.setIcon(BitmapDescriptorFactory.fromView(view));
+            ArrayList<com.baidu.mapapi.map.BitmapDescriptor> bdList = new ArrayList<>();
+            for (BitmapDescriptor bitmap : descriptors) {
+                bdList.add(BitmapDescriptorFactory.fromBitmap(bitmap.bitmap));
+            }
+            bdMarker.setIcons(bdList);
         } else if (gdMarker != null) {
-            gdMarker.setIcon(com.amap.api.maps.model.BitmapDescriptorFactory.fromView(view));
-        }
-    }
-
-    public void setIconFromResource(int resId) {
-        if (bdMarker != null) {
-            bdMarker.setIcon(BitmapDescriptorFactory.fromResource(resId));
-        } else if (gdMarker != null) {
-            gdMarker.setIcon(com.amap.api.maps.model.BitmapDescriptorFactory.fromResource(resId));
-        }
-    }
-
-    public void setIconFromBitmap(Bitmap bitmap) {
-        if (bdMarker != null) {
-            bdMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
-        } else if (gdMarker != null) {
-            gdMarker.setIcon(com.amap.api.maps.model.BitmapDescriptorFactory.fromBitmap(bitmap));
+            ArrayList<com.amap.api.maps.model.BitmapDescriptor> bdList = new ArrayList<>();
+            for (BitmapDescriptor bitmap : descriptors) {
+                bdList.add(com.amap.api.maps.model.BitmapDescriptorFactory
+                        .fromBitmap(bitmap.bitmap));
+            }
+            gdMarker.setIcons(bdList);
         }
     }
 

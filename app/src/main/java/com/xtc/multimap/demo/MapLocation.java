@@ -103,6 +103,13 @@ public class MapLocation extends Activity {
             case R.id.change_map:
                 initMap();
                 break;
+            case R.id.change_map_mode:
+                if (mapLocationClient != null) {
+                    mapLocationClient.startLocation();
+                } else {
+                    startLocation();
+                }
+                break;
         }
     }
 

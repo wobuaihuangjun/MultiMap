@@ -51,7 +51,10 @@ public class MainActivity extends Activity {
                     "实现地图的基础定位", MapLocation.class),
 
             new DemoInfo("地图事件监听",
-                    "实现地图事件的回调监听", MapEventListener.class)
+                    "实现地图事件的回调监听", MapEventListener.class),
+
+            new DemoInfo("地图覆盖物",
+                    "实现地图覆盖物的相关实例", MapOverlay.class)
 
     };
 

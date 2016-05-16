@@ -15,6 +15,9 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 import com.xtc.map.location.Map;
+import com.xtc.map.overlay.Marker;
+import com.xtc.map.overlay.MarkerOptions;
+import com.xtc.map.overlay.OverlayConvert;
 import com.xtc.map.status.MapStatus;
 import com.xtc.map.status.MapStatusUpdate;
 
@@ -104,6 +107,24 @@ public abstract class BaseMapManager {
     }
 
     /**
+     * 加一个Marker（标记）到地图上
+     *
+     * @param options 一个MarkerOptions 对象，它定义了如何渲染Marker 的属性。
+     * @return 返回一个 Marker 对象，此对象已经加到地图上。
+     */
+    public Marker addMarker(MarkerOptions options) {
+        if (currentMapType == MapManager.MAP_TYPE_AMAP) {
+            return new Marker(gdMap.addMarker(OverlayConvert.convertGdMarkerOptions(options)));
+        } else {
+            return new Marker((com.baidu.mapapi.map.Marker) bdMap
+                    .addOverlay(OverlayConvert.convertBdMarkerOptions(options)));
+        }
+    }
+
+//    public final Circle addCircle(CircleOptions var1) {
+//    }
+
+    /**
      * 获取地图的当前状态
      *
      * @return 地图的当前状态
@@ -116,6 +137,11 @@ public abstract class BaseMapManager {
         }
     }
 
+    /**
+     * 改变地图状态
+     *
+     * @param var1 地图状态将要发生的变化
+     */
     public void updateMapStatus(MapStatusUpdate var1) {
         MapStatus status = var1.getMapStatus(getMapStatus());
         if (bdMap != null) {
@@ -130,6 +156,11 @@ public abstract class BaseMapManager {
         }
     }
 
+    /**
+     * 以动画方式更新地图状态，动画耗时 300 ms
+     *
+     * @param var1 定义转换的目的地位置
+     */
     public void animateMapStatus(MapStatusUpdate var1) {
         MapStatus status = var1.getMapStatus(getMapStatus());
         if (bdMap != null) {
@@ -145,6 +176,12 @@ public abstract class BaseMapManager {
 
     }
 
+    /**
+     * 以动画方式更新地图状态
+     *
+     * @param var1 地图状态将要发生的变化
+     * @param var2 动画时间
+     */
     public void animateMapStatus(MapStatusUpdate var1, int var2) {
         MapStatus status = var1.getMapStatus(getMapStatus());
         if (bdMap != null) {

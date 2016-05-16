@@ -1,6 +1,5 @@
 package com.xtc.map;
 
-import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.CameraPosition;
 import com.baidu.mapapi.map.MapPoi;
 import com.xtc.map.status.MapStatus;

@@ -57,6 +57,7 @@
         <activity android:name=".demo.SimpleMap" />
         <activity android:name=".demo.MapEventListener" />
         <activity android:name=".demo.MapLocation" />
+        <activity android:name=".demo.MapOverlay" />
     </application>
 
 </manifest>

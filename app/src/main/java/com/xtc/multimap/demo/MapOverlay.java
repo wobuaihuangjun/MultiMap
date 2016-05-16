@@ -1,25 +1,28 @@
 package com.xtc.multimap.demo;
 
 import android.app.Activity;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.xtc.map.MapManager;
-import com.xtc.map.MapOptions;
 import com.xtc.map.MapUISettings;
-import com.xtc.map.location.Map;
+import com.xtc.map.overlay.BitmapDescriptorFactory;
+import com.xtc.map.overlay.Marker;
+import com.xtc.map.overlay.MarkerOptions;
 import com.xtc.multimap.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MapStatusActivity extends Activity {
+public class MapOverlay extends Activity {
 
     @Bind(R.id.map_view)
     RelativeLayout mapView;
+    @Bind(R.id.change_map_mode)
+    Button changeMapMode;
 
     private Bundle savedInstanceState;
 
@@ -32,6 +35,9 @@ public class MapStatusActivity extends Activity {
         this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.simple_map);
         ButterKnife.bind(this);
+
+        changeMapMode.setText("Add Marker");
+
         mapManager = new MapManager(this);
 
         initMap();
@@ -44,24 +50,21 @@ public class MapStatusActivity extends Activity {
         } else {
             mapManager.setMapView(mapView, MapManager.MAP_TYPE_BD);
         }
-
-        initUISettings();
-    }
-
-    private void initUISettings() {
         mapUISettings = mapManager.getUISettings();
         mapUISettings.setAllGesturesEnabled(true);
-        if (mapManager.getCurrentMapType() == MapManager.MAP_TYPE_AMAP) {
-            mapUISettings.setZoomPosition(MapOptions.ZOOM_POSITION_RIGHT_CENTER);
-        }
-        mapManager.setOnMapLoadedListener(new Map.OnMapLoadedListener() {
-            @Override
-            public void onMapLoaded() {
-                if (mapManager.getCurrentMapType() == MapManager.MAP_TYPE_BD) {
-                    mapUISettings.setZoomPosition(new Point(mapView.getWidth() - 80, mapView.getHeight() / 2 - 80));
-                }
-            }
-        });
+
+        addMarker();
+    }
+
+    private void addMarker() {
+
+        Marker marker = mapManager.addMarker(new MarkerOptions()
+                .position(mapManager.getMapStatus().target)
+                .title("好好学习")
+                .icon(BitmapDescriptorFactory.fromResource(this, R.drawable.icon_marka))
+                .draggable(true));
+        marker.setRotate(90);// 设置marker旋转90度
+        marker.showInfoWindow();// 设置默认显示一个infowinfow
     }
 
     @Override

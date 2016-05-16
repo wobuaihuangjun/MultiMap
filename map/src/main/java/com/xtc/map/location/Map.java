@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 import com.amap.api.maps.model.Polyline;
 import com.xtc.map.LatLng;
 import com.xtc.map.status.MapStatus;
-import com.xtc.map.Marker;
+import com.xtc.map.overlay.Marker;
 import com.xtc.map.Poi;
 
 /**
