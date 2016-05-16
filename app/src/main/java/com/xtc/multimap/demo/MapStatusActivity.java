@@ -16,10 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
-public class SimpleMap extends Activity {
-
-    private static final String TAG = "SimpleMap";
+public class MapStatusActivity extends Activity {
 
     @Bind(R.id.map_view)
     RelativeLayout mapView;
@@ -54,10 +51,6 @@ public class SimpleMap extends Activity {
     private void initUISettings() {
         mapUISettings = mapManager.getUISettings();
         mapUISettings.setAllGesturesEnabled(true);
-        mapUISettings.setScaleControlsEnabled(true);
-        mapUISettings.setZoomControlsEnabled(true);
-        mapUISettings.setCompassEnabled(true);
-        mapUISettings.setLogoPosition(MapOptions.LOGO_POSITION_BOTTOM_CENTER);
         if (mapManager.getCurrentMapType() == MapManager.MAP_TYPE_AMAP) {
             mapUISettings.setZoomPosition(MapOptions.ZOOM_POSITION_RIGHT_CENTER);
         }
@@ -96,11 +89,6 @@ public class SimpleMap extends Activity {
                 initMap();
                 break;
             case R.id.change_map_mode:
-                if (mapManager.getMapMode() == MapOptions.MAP_SATELLITE) {
-                    mapManager.setMapMode(MapOptions.MAP_NORMAL);
-                } else {
-                    mapManager.setMapMode(MapOptions.MAP_SATELLITE);
-                }
                 break;
         }
     }

@@ -1,7 +1,9 @@
 package com.xtc.map;
 
+import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.CameraPosition;
 import com.baidu.mapapi.map.MapPoi;
+import com.xtc.map.status.MapStatus;
 
 /**
  * 地图类型转换
@@ -86,7 +88,7 @@ public class ConvertUtil {
     }
 
     /**
-     * 转换高德地图状态
+     * 转换百度地图状态
      *
      * @param bdMapStatus 百度地图状态
      * @return MapStatus
@@ -100,6 +102,60 @@ public class ConvertUtil {
             mapStatus.bearing = bdMapStatus.rotate;
         }
         return mapStatus;
+    }
+
+    /**
+     * 转换高德地图状态
+     *
+     * @param mapStatus 地图状态
+     * @return CameraPosition
+     */
+    public static CameraPosition convertToGdMapStatus(MapStatus mapStatus) {
+        if (mapStatus == null) {
+            return null;
+        }
+        CameraPosition.Builder builder = CameraPosition.builder();
+        if (mapStatus.target != null) {
+            com.amap.api.maps.model.LatLng latLng = convertToGdLatLng(mapStatus.target);
+            builder.target(latLng);
+        }
+        if (mapStatus.zoom != null) {
+            builder.zoom(mapStatus.zoom);
+        }
+        if (mapStatus.tilt != null) {
+            builder.tilt(mapStatus.tilt);
+        }
+        if (mapStatus.bearing != null) {
+            builder.bearing(mapStatus.bearing);
+        }
+        return builder.build();
+    }
+
+    /**
+     * 转换为百度地图状态
+     *
+     * @param mapStatus 地图状态
+     * @return 百度MapStatus
+     */
+    public static com.baidu.mapapi.map.MapStatus convertToBdMapStatus(MapStatus mapStatus) {
+        if (mapStatus == null) {
+            return null;
+        }
+        com.baidu.mapapi.map.MapStatus.Builder builder = new com.baidu.mapapi.map.MapStatus.Builder();
+        if (mapStatus.target != null) {
+            com.baidu.mapapi.model.LatLng latLng = convertToBdLatLng(mapStatus.target);
+            builder.target(latLng);
+        }
+        if (mapStatus.zoom != null) {
+            builder.zoom(mapStatus.zoom);
+        }
+        if (mapStatus.tilt != null) {
+            builder.overlook(mapStatus.tilt);
+        }
+        if (mapStatus.bearing != null) {
+            builder.rotate(mapStatus.bearing);
+        }
+        return builder.build();
     }
 
     /**

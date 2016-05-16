@@ -2,10 +2,13 @@ package com.xtc.multimap.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.xtc.map.status.MapStatus;
+import com.xtc.map.status.MapStatusUpdateFactory;
 import com.xtc.multimap.R;
 import com.xtc.map.LatLng;
 import com.xtc.map.MapManager;
@@ -34,6 +37,15 @@ public class MapEventListener extends Activity {
         mapManager = new MapManager(this);
 
         initMap();
+    }
+
+    private void initMap() {
+        if (mapManager.getCurrentMapType() == MapManager.MAP_TYPE_BD) {
+            mapManager.setMapView(mapView, MapManager.MAP_TYPE_AMAP);
+            mapManager.onCreate(savedInstanceState);
+        } else {
+            mapManager.setMapView(mapView, MapManager.MAP_TYPE_BD);
+        }
         setMapEventListener();
     }
 
@@ -41,28 +53,42 @@ public class MapEventListener extends Activity {
         mapManager.setOnMapLoadedListener(new Map.OnMapLoadedListener() {
             @Override
             public void onMapLoaded() {
-
+                Log.i(TAG, "setOnMapLoadedListener");
+                mapManager.updateMapStatus(MapStatusUpdateFactory.zoomTo(16));
             }
         });
 
         mapManager.setOnMapClickListener(new Map.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng var1) {
-
+                Log.i(TAG, "setOnMapClickListener");
+                mapManager.animateMapStatus(MapStatusUpdateFactory.newLatLng(var1), 1000);
             }
         });
 
         mapManager.setOnMapLongClickListener(new Map.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng var1) {
-
+                Log.i(TAG, "setOnMapLongClickListener");
             }
         });
 
         mapManager.setOnMapTouchListener(new Map.OnMapTouchListener() {
             @Override
             public void onTouch(MotionEvent var1) {
+                Log.i(TAG, "setOnMapTouchListener");
+            }
+        });
 
+        mapManager.setOnMapStatusChangeListener(new Map.OnMapStatusChangeListener() {
+            @Override
+            public void onMapStatusChange(MapStatus var1) {
+                Log.i(TAG, "onMapStatusChange");
+            }
+
+            @Override
+            public void onMapStatusChangeFinish(MapStatus var1) {
+                Log.i(TAG, "onMapStatusChangeFinish");
             }
         });
     }
@@ -93,15 +119,5 @@ public class MapEventListener extends Activity {
                 break;
         }
     }
-
-    private void initMap() {
-        if (mapManager.getCurrentMapType() == MapManager.MAP_TYPE_BD) {
-            mapManager.setMapView(mapView, MapManager.MAP_TYPE_AMAP);
-            mapManager.onCreate(savedInstanceState);
-        } else {
-            mapManager.setMapView(mapView, MapManager.MAP_TYPE_BD);
-        }
-    }
-
 
 }

@@ -5,13 +5,18 @@ import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapPoi;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 import com.xtc.map.location.Map;
+import com.xtc.map.status.MapStatus;
+import com.xtc.map.status.MapStatusUpdate;
 
 /**
  * 地图管理的基类
@@ -23,15 +28,17 @@ public abstract class BaseMapManager {
     protected MapView bdMapView;
     protected BaiduMap bdMap;
 
-    protected com.amap.api.maps.MapView aMapView;
-    protected AMap aMap;
+    protected com.amap.api.maps.MapView gdMapView;
+    protected AMap gdMap;
 
     protected int currentMapType;
 
     protected MapUISettings uiSettings;
+    protected MapProjection mapProjection;
 
     public BaseMapManager() {
         uiSettings = new MapUISettings();
+        mapProjection = new MapProjection();
     }
 
     /**
@@ -46,43 +53,11 @@ public abstract class BaseMapManager {
      */
     protected abstract void mapChanged();
 
-    protected int convertAMapMode(int type) {
-        if (type == MapOptions.MAP_SATELLITE) {
-            return AMap.MAP_TYPE_SATELLITE;
-        } else {
-            return AMap.MAP_TYPE_NORMAL;
-        }
-    }
-
-    protected int convertBaiduMapMode(int type) {
-        if (type == MapOptions.MAP_SATELLITE) {
-            return BaiduMap.MAP_TYPE_SATELLITE;
-        } else {
-            return BaiduMap.MAP_TYPE_NORMAL;
-        }
-    }
-
-    protected int getAMapMode() {
-        if (AMap.MAP_TYPE_SATELLITE == aMap.getMapType()) {
-            return MapOptions.MAP_SATELLITE;
-        } else {
-            return MapOptions.MAP_NORMAL;
-        }
-    }
-
-    protected int getBaiduMode() {
-        if (BaiduMap.MAP_TYPE_SATELLITE == bdMap.getMapType()) {
-            return MapOptions.MAP_SATELLITE;
-        } else {
-            return MapOptions.MAP_NORMAL;
-        }
-    }
-
     /**
      * 如果是显示高德地图，在创建mapview后此方法必须调用
      */
     public void onCreate(Bundle bundle) {
-        if (aMapView != null) aMapView.onCreate(bundle);
+        if (gdMapView != null) gdMapView.onCreate(bundle);
     }
 
     /**
@@ -91,7 +66,7 @@ public abstract class BaseMapManager {
     public void onPause() {
         if (bdMapView != null) bdMapView.onPause();
 
-        if (aMapView != null) aMapView.onPause();
+        if (gdMapView != null) gdMapView.onPause();
     }
 
     /**
@@ -100,7 +75,7 @@ public abstract class BaseMapManager {
     public void onResume() {
         if (bdMapView != null) bdMapView.onResume();
 
-        if (aMapView != null) aMapView.onResume();
+        if (gdMapView != null) gdMapView.onResume();
     }
 
     /**
@@ -109,7 +84,7 @@ public abstract class BaseMapManager {
     public void onDestroy() {
         if (bdMapView != null) bdMapView.onDestroy();
 
-        if (aMapView != null) aMapView.onDestroy();
+        if (gdMapView != null) gdMapView.onDestroy();
     }
 
     protected void releaseBaiduMap() {
@@ -118,29 +93,72 @@ public abstract class BaseMapManager {
             bdMapView = null;
             bdMap = null;
         }
-
     }
 
     protected void releaseAMap() {
-        if (aMapView != null) {
-            aMapView.onDestroy();
-            aMapView = null;
-            aMap = null;
-
+        if (gdMapView != null) {
+            gdMapView.onDestroy();
+            gdMapView = null;
+            gdMap = null;
         }
     }
 
-//    public final void moveCamera(CameraUpdate var1) {
-//    }
-//
-//    public final void animateCamera(CameraUpdate var1) {
-//    }
-//
-//    public final void animateCamera(CameraUpdate var1, AMap.CancelableCallback var2) {
-//    }
-//
-//    public final void animateCamera(CameraUpdate var1, long var2, AMap.CancelableCallback var4) {
-//    }
+    /**
+     * 获取地图的当前状态
+     *
+     * @return 地图的当前状态
+     */
+    public MapStatus getMapStatus() {
+        if (currentMapType == MapManager.MAP_TYPE_AMAP) {
+            return ConvertUtil.convertGdMapStatus(gdMap.getCameraPosition());
+        } else {
+            return ConvertUtil.convertBdMapStatus(bdMap.getMapStatus());
+        }
+    }
+
+    public void updateMapStatus(MapStatusUpdate var1) {
+        MapStatus status = var1.getMapStatus(getMapStatus());
+        if (bdMap != null) {
+            com.baidu.mapapi.map.MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(
+                    ConvertUtil.convertToBdMapStatus(status));
+            bdMap.setMapStatus(update);
+        }
+        if (gdMap != null) {
+            CameraUpdate update = CameraUpdateFactory.newCameraPosition(
+                    ConvertUtil.convertToGdMapStatus(status));
+            gdMap.moveCamera(update);
+        }
+    }
+
+    public void animateMapStatus(MapStatusUpdate var1) {
+        MapStatus status = var1.getMapStatus(getMapStatus());
+        if (bdMap != null) {
+            com.baidu.mapapi.map.MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(
+                    ConvertUtil.convertToBdMapStatus(status));
+            bdMap.animateMapStatus(update);
+        }
+        if (gdMap != null) {
+            CameraUpdate update = CameraUpdateFactory.newCameraPosition(
+                    ConvertUtil.convertToGdMapStatus(status));
+            gdMap.animateCamera(update);
+        }
+
+    }
+
+    public void animateMapStatus(MapStatusUpdate var1, int var2) {
+        MapStatus status = var1.getMapStatus(getMapStatus());
+        if (bdMap != null) {
+            com.baidu.mapapi.map.MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(
+                    ConvertUtil.convertToBdMapStatus(status));
+            bdMap.animateMapStatus(update, var2);
+        }
+        if (gdMap != null) {
+            CameraUpdate update = CameraUpdateFactory.newCameraPosition(
+                    ConvertUtil.convertToGdMapStatus(status));
+            gdMap.animateCamera(update, var2, null);
+        }
+
+    }
 
     public final void setOnMapStatusChangeListener(@NonNull final Map.OnMapStatusChangeListener listener) {
         if (bdMap != null) {
@@ -161,8 +179,8 @@ public abstract class BaseMapManager {
                 }
             });
         }
-        if (aMap != null) {
-            aMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
+        if (gdMap != null) {
+            gdMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
                 @Override
                 public void onCameraChange(CameraPosition cameraPosition) {
                     listener.onMapStatusChange(ConvertUtil.convertGdMapStatus(cameraPosition));
@@ -190,8 +208,8 @@ public abstract class BaseMapManager {
                 }
             });
         }
-        if (aMap != null) {
-            aMap.setOnMapClickListener(new AMap.OnMapClickListener() {
+        if (gdMap != null) {
+            gdMap.setOnMapClickListener(new AMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(com.amap.api.maps.model.LatLng latLng) {
                     listener.onMapClick(ConvertUtil.convertGdLatLng(latLng));
@@ -209,8 +227,8 @@ public abstract class BaseMapManager {
                 }
             });
         }
-        if (aMap != null) {
-            aMap.setOnMapTouchListener(new AMap.OnMapTouchListener() {
+        if (gdMap != null) {
+            gdMap.setOnMapTouchListener(new AMap.OnMapTouchListener() {
                 @Override
                 public void onTouch(MotionEvent motionEvent) {
                     listener.onTouch(motionEvent);
@@ -234,17 +252,14 @@ public abstract class BaseMapManager {
                 }
             });
         }
-        if (aMap != null) {
-            aMap.setOnPOIClickListener(new AMap.OnPOIClickListener() {
+        if (gdMap != null) {
+            gdMap.setOnPOIClickListener(new AMap.OnPOIClickListener() {
                 @Override
                 public void onPOIClick(Poi poi) {
                     listener.onPOIClick(ConvertUtil.convertGdPoi(poi));
                 }
             });
         }
-    }
-
-    public final void setOnMyLocationChangeListener(Map.OnMyLocationChangeListener var1) {
     }
 
     public final void setOnMapLongClickListener(@NonNull final Map.OnMapLongClickListener listener) {
@@ -256,8 +271,8 @@ public abstract class BaseMapManager {
                 }
             });
         }
-        if (aMap != null) {
-            aMap.setOnMapLongClickListener(new AMap.OnMapLongClickListener() {
+        if (gdMap != null) {
+            gdMap.setOnMapLongClickListener(new AMap.OnMapLongClickListener() {
                 @Override
                 public void onMapLongClick(com.amap.api.maps.model.LatLng latLng) {
                     listener.onMapLongClick(ConvertUtil.convertGdLatLng(latLng));
@@ -276,8 +291,8 @@ public abstract class BaseMapManager {
                 }
             });
         }
-        if (aMap != null) {
-            aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+        if (gdMap != null) {
+            gdMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(com.amap.api.maps.model.Marker marker) {
                     listener.onMarkerClick(new Marker(marker));
@@ -285,10 +300,6 @@ public abstract class BaseMapManager {
                 }
             });
         }
-    }
-
-    @Deprecated
-    public final void setOnPolylineClickListener(Map.OnPolylineClickListener var1) {
     }
 
     public final void setOnMarkerDragListener(@NonNull final Map.OnMarkerDragListener listener) {
@@ -310,8 +321,8 @@ public abstract class BaseMapManager {
                 }
             });
         }
-        if (aMap != null) {
-            aMap.setOnMarkerDragListener(new AMap.OnMarkerDragListener() {
+        if (gdMap != null) {
+            gdMap.setOnMarkerDragListener(new AMap.OnMarkerDragListener() {
                 @Override
                 public void onMarkerDragStart(com.amap.api.maps.model.Marker marker) {
                     listener.onMarkerDragStart(new Marker(marker));
@@ -330,10 +341,6 @@ public abstract class BaseMapManager {
         }
     }
 
-    @Deprecated
-    public final void setOnInfoWindowClickListener(@NonNull final Map.OnInfoWindowClickListener listener) {
-    }
-
     public final void setOnMapLoadedListener(@NonNull final Map.OnMapLoadedListener listener) {
         if (bdMap != null) {
             bdMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
@@ -343,8 +350,8 @@ public abstract class BaseMapManager {
                 }
             });
         }
-        if (aMap != null) {
-            aMap.setOnMapLoadedListener(new AMap.OnMapLoadedListener() {
+        if (gdMap != null) {
+            gdMap.setOnMapLoadedListener(new AMap.OnMapLoadedListener() {
                 @Override
                 public void onMapLoaded() {
                     listener.onMapLoaded();
@@ -353,4 +360,11 @@ public abstract class BaseMapManager {
         }
     }
 
+    @Deprecated
+    public final void setOnInfoWindowClickListener(@NonNull final Map.OnInfoWindowClickListener listener) {
+    }
+
+    @Deprecated
+    public final void setOnPolylineClickListener(Map.OnPolylineClickListener var1) {
+    }
 }

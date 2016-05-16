@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.xtc.multimap.R;
+import com.xtc.map.LatLng;
 import com.xtc.map.MapManager;
+import com.xtc.map.location.Map;
 import com.xtc.map.location.MapLocationClient;
 import com.xtc.map.location.MapLocationListener;
 import com.xtc.map.location.MapLocationOption;
+import com.xtc.map.status.MapStatus;
+import com.xtc.map.status.MapStatusUpdateFactory;
+import com.xtc.multimap.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,6 +26,8 @@ public class MapLocation extends Activity {
 
     @Bind(R.id.map_view)
     RelativeLayout mapView;
+    @Bind(R.id.change_map_mode)
+    Button changeMapMode;
 
     private Bundle savedInstanceState;
 
@@ -32,6 +39,9 @@ public class MapLocation extends Activity {
         this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.simple_map);
         ButterKnife.bind(this);
+
+        changeMapMode.setText("定位一次");
+
         mapManager = new MapManager(this);
 
         initMap();
@@ -64,6 +74,8 @@ public class MapLocation extends Activity {
             mapManager.setMapView(mapView, MapManager.MAP_TYPE_BD);
         }
         startLocation();
+
+        mapManager.setOnMapStatusChangeListener(listener);
     }
 
     private MapLocationClient mapLocationClient;
@@ -94,10 +106,32 @@ public class MapLocation extends Activity {
         }
     }
 
+    Map.OnMapStatusChangeListener listener = new Map.OnMapStatusChangeListener() {
+        @Override
+        public void onMapStatusChange(MapStatus var1) {
+            Log.i(TAG, "map status change");
+        }
+
+        @Override
+        public void onMapStatusChangeFinish(MapStatus var1) {
+            Log.i(TAG, "map status change finish");
+        }
+    };
+
     MapLocationListener locationListener = new MapLocationListener() {
         @Override
         public void onLocationChanged(com.xtc.map.location.MapLocation mapLocation) {
-            Log.i(TAG, mapLocation.toString());
+            if (mapLocation != null && mapLocation.getErrorCode() == com.xtc.map.location.MapLocation.SUCCESS) {
+                if (mapLocationClient != null) {
+                    mapLocationClient.stopLocation();
+                }
+
+                LatLng latLng = new LatLng(mapLocation.getLongitude(), mapLocation.getLatitude());
+                MapStatus status = new MapStatus.Builder().target(latLng).zoom(18).build();
+                mapManager.animateMapStatus(MapStatusUpdateFactory.newMapStatus(status), 1000);
+                Log.i(TAG, mapLocation.toString());
+            }
+
         }
     };
 }

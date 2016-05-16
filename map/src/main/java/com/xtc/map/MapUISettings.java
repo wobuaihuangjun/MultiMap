@@ -1,8 +1,13 @@
 package com.xtc.map;
 
+import android.graphics.Point;
+import android.util.Log;
+
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.LogoPosition;
+import com.baidu.mapapi.map.MapView;
 
 /**
  * 地图UI设置控制
@@ -13,24 +18,23 @@ public class MapUISettings {
 
     private int currentMapType;
 
-    private AMap aMap;
+    private AMap gdMap;
 
-    private BaiduMap baiduMap;
+    private BaiduMap bdMap;
+    private MapView bdMapView;
 
-    void setAMap(AMap aMap) {
+    MapUISettings() {
+    }
+
+    void setGdMap(AMap gdMap) {
         this.currentMapType = MapManager.MAP_TYPE_AMAP;
-        this.aMap = aMap;
+        this.gdMap = gdMap;
     }
 
-    void setBaiduMap(BaiduMap baiduMap) {
+    void setBdMap(BaiduMap bdMap, MapView bdMapView) {
         this.currentMapType = MapManager.MAP_TYPE_BD;
-        this.baiduMap = baiduMap;
-    }
-
-    void init(int currentMapType, AMap aMap, BaiduMap baiduMap) {
-        this.currentMapType = currentMapType;
-        this.aMap = aMap;
-        this.baiduMap = baiduMap;
+        this.bdMapView = bdMapView;
+        this.bdMap = bdMap;
     }
 
     /**
@@ -48,17 +52,9 @@ public class MapUISettings {
      */
     public void setZoomGesturesEnabled(boolean enabled) {
         if (currentMapType == MapManager.MAP_TYPE_BD) {
-            baiduMap.getUiSettings().setZoomGesturesEnabled(enabled);
+            bdMap.getUiSettings().setZoomGesturesEnabled(enabled);
         } else {
-            aMap.getUiSettings().setZoomGesturesEnabled(enabled);
-        }
-    }
-
-    public boolean isZoomGesturesEnabled() {
-        if (currentMapType == MapManager.MAP_TYPE_BD) {
-            return baiduMap.getUiSettings().isZoomGesturesEnabled();
-        } else {
-            return aMap.getUiSettings().isZoomGesturesEnabled();
+            gdMap.getUiSettings().setZoomGesturesEnabled(enabled);
         }
     }
 
@@ -67,17 +63,9 @@ public class MapUISettings {
      */
     public void setRotateGesturesEnabled(boolean enabled) {
         if (currentMapType == MapManager.MAP_TYPE_BD) {
-            baiduMap.getUiSettings().setRotateGesturesEnabled(enabled);
+            bdMap.getUiSettings().setRotateGesturesEnabled(enabled);
         } else {
-            aMap.getUiSettings().setRotateGesturesEnabled(enabled);
-        }
-    }
-
-    public boolean isRotateGesturesEnabled() {
-        if (currentMapType == MapManager.MAP_TYPE_BD) {
-            return baiduMap.getUiSettings().isRotateGesturesEnabled();
-        } else {
-            return aMap.getUiSettings().isRotateGesturesEnabled();
+            gdMap.getUiSettings().setRotateGesturesEnabled(enabled);
         }
     }
 
@@ -86,17 +74,9 @@ public class MapUISettings {
      */
     public void setScrollGesturesEnabled(boolean enabled) {
         if (currentMapType == MapManager.MAP_TYPE_BD) {
-            baiduMap.getUiSettings().setScrollGesturesEnabled(enabled);
+            bdMap.getUiSettings().setScrollGesturesEnabled(enabled);
         } else {
-            aMap.getUiSettings().setScrollGesturesEnabled(enabled);
-        }
-    }
-
-    public boolean isScrollGesturesEnabled() {
-        if (currentMapType == MapManager.MAP_TYPE_BD) {
-            return baiduMap.getUiSettings().isScrollGesturesEnabled();
-        } else {
-            return aMap.getUiSettings().isScrollGesturesEnabled();
+            gdMap.getUiSettings().setScrollGesturesEnabled(enabled);
         }
     }
 
@@ -105,17 +85,9 @@ public class MapUISettings {
      */
     public void setTiltGesturesEnabled(boolean enabled) {
         if (currentMapType == MapManager.MAP_TYPE_BD) {
-            baiduMap.getUiSettings().setOverlookingGesturesEnabled(enabled);
+            bdMap.getUiSettings().setOverlookingGesturesEnabled(enabled);
         } else {
-            aMap.getUiSettings().setTiltGesturesEnabled(enabled);
-        }
-    }
-
-    public boolean isTiltGesturesEnabled() {
-        if (currentMapType == MapManager.MAP_TYPE_BD) {
-            return baiduMap.getUiSettings().isOverlookingGesturesEnabled();
-        } else {
-            return aMap.getUiSettings().isTiltGesturesEnabled();
+            gdMap.getUiSettings().setTiltGesturesEnabled(enabled);
         }
     }
 
@@ -124,147 +96,94 @@ public class MapUISettings {
      */
     public void setCompassEnabled(boolean enabled) {
         if (currentMapType == MapManager.MAP_TYPE_BD) {
-            baiduMap.getUiSettings().setCompassEnabled(enabled);
+            bdMap.getUiSettings().setCompassEnabled(enabled);
         } else {
-            aMap.getUiSettings().setCompassEnabled(enabled);
+            gdMap.getUiSettings().setCompassEnabled(enabled);
         }
-    }
-
-    public boolean isCompassEnabled() {
-        if (currentMapType == MapManager.MAP_TYPE_BD) {
-            return baiduMap.getUiSettings().isCompassEnabled();
-        } else {
-            return aMap.getUiSettings().isCompassEnabled();
-        }
-    }
-
-    /**
-     * 设置定位按钮是否显示。默认的定位按钮为显示。
-     * <p/>
-     * 高德地图模式下可用
-     * <p/>
-     * 这个按钮可以让当前可视区域移动到以用户所在位置为中心的地图上。
-     * 在这里定位按钮显示同时还要保证定位层处于显示状态， 定位按钮才会显示。
-     *
-     * @param enabled
-     */
-    public void setMyLocationButtonEnabled(boolean enabled) {
-        if (currentMapType == MapManager.MAP_TYPE_AMAP) {
-            aMap.getUiSettings().setMyLocationButtonEnabled(enabled);
-        }
-    }
-
-    public boolean isMyLocationButtonEnabled() {
-        if (currentMapType != MapManager.MAP_TYPE_AMAP) {
-            return false;
-        }
-        return aMap.getUiSettings().isMyLocationButtonEnabled();
     }
 
     /**
      * 设置比例尺功能是否可用
      * <p/>
-     * 高德地图模式下可用
      *
      * @param enabled
      */
     public void setScaleControlsEnabled(boolean enabled) {
         if (currentMapType == MapManager.MAP_TYPE_AMAP) {
-            aMap.getUiSettings().setScaleControlsEnabled(enabled);
+            gdMap.getUiSettings().setScaleControlsEnabled(enabled);
+        } else {
+            bdMapView.showScaleControl(enabled);
         }
-    }
-
-    public boolean isScaleControlsEnabled() {
-        if (currentMapType != MapManager.MAP_TYPE_AMAP) {
-            return false;
-        }
-        return aMap.getUiSettings().isScaleControlsEnabled();
     }
 
     /**
      * 这个方法设置了地图是否允许显示缩放按钮。如果允许，则在地图上显示。默认缩放按钮为显示。
      * <p/>
-     * 高德地图模式下可用
      *
      * @param enabled
      */
     public void setZoomControlsEnabled(boolean enabled) {
         if (currentMapType == MapManager.MAP_TYPE_AMAP) {
-            aMap.getUiSettings().setZoomControlsEnabled(enabled);
+            gdMap.getUiSettings().setZoomControlsEnabled(enabled);
+        } else {
+            bdMapView.showZoomControls(enabled);
         }
-    }
-
-    public boolean isZoomControlsEnabled() {
-        if (currentMapType != MapManager.MAP_TYPE_AMAP) {
-            return false;
-        }
-        return aMap.getUiSettings().isZoomControlsEnabled();
     }
 
     /**
      * 设置缩放按钮的位置。
      * <p/>
-     * 高德地图模式下可用
+     * 高德地图模式下可用,在 onMapLoadFinish 后生效
      *
-     * @param position
+     * @param position MapOptions
      */
     public void setZoomPosition(int position) {
-        if (currentMapType != MapManager.MAP_TYPE_AMAP) {
-            return;
-        }
-        if (MapOptions.ZOOM_POSITION_RIGHT_BUTTOM == position) {
-            aMap.getUiSettings().setZoomPosition(AMapOptions.ZOOM_POSITION_RIGHT_BUTTOM);
-        } else if (MapOptions.ZOOM_POSITION_RIGHT_CENTER == position) {
-            aMap.getUiSettings().setZoomPosition(AMapOptions.ZOOM_POSITION_RIGHT_CENTER);
+        if (currentMapType == MapManager.MAP_TYPE_AMAP) {
+            if (MapOptions.ZOOM_POSITION_RIGHT_BUTTOM == position) {
+                gdMap.getUiSettings().setZoomPosition(AMapOptions.ZOOM_POSITION_RIGHT_BUTTOM);
+            } else if (MapOptions.ZOOM_POSITION_RIGHT_CENTER == position) {
+                gdMap.getUiSettings().setZoomPosition(AMapOptions.ZOOM_POSITION_RIGHT_CENTER);
+            }
         }
     }
 
-    public int getZoomPosition() {
-        if (currentMapType != MapManager.MAP_TYPE_AMAP) {
-            return MapOptions.UNKNOWN;
-        }
-        int type = aMap.getUiSettings().getZoomPosition();
-        if (AMapOptions.ZOOM_POSITION_RIGHT_BUTTOM == type) {
-            return MapOptions.ZOOM_POSITION_RIGHT_BUTTOM;
-        } else if (AMapOptions.ZOOM_POSITION_RIGHT_CENTER == type) {
-            return MapOptions.ZOOM_POSITION_RIGHT_CENTER;
-        } else {
-            return MapOptions.UNKNOWN;
+    /**
+     * 设置缩放按钮的位置
+     * <p/>
+     * 百度地图可用
+     *
+     * @param point
+     */
+    public void setZoomPosition(Point point) {
+        if (currentMapType == MapManager.MAP_TYPE_BD) {
+            bdMapView.setZoomControlsPosition(point);
         }
     }
 
     /**
      * 设置地图Logo的位置。
-     * 高德地图模式下可用
      *
-     * @param position
+     * @param position MapOptions
      */
     public void setLogoPosition(int position) {
-        if (currentMapType != MapManager.MAP_TYPE_AMAP) {
-            return;
+        if (currentMapType == MapManager.MAP_TYPE_AMAP) {
+            if (MapOptions.LOGO_POSITION_BOTTOM_LEFT == position) {
+                gdMap.getUiSettings().setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_LEFT);
+            } else if (MapOptions.LOGO_POSITION_BOTTOM_CENTER == position) {
+                gdMap.getUiSettings().setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_CENTER);
+            } else if (MapOptions.LOGO_POSITION_BOTTOM_RIGHT == position) {
+                gdMap.getUiSettings().setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_RIGHT);
+            }
+        } else {
+            if (MapOptions.LOGO_POSITION_BOTTOM_LEFT == position) {
+                bdMapView.setLogoPosition(LogoPosition.logoPostionleftBottom);
+            } else if (MapOptions.LOGO_POSITION_BOTTOM_CENTER == position) {
+                bdMapView.setLogoPosition(LogoPosition.logoPostionCenterBottom);
+            } else if (MapOptions.LOGO_POSITION_BOTTOM_RIGHT == position) {
+                bdMapView.setLogoPosition(LogoPosition.logoPostionRightBottom);
+            }
         }
-        if (MapOptions.LOGO_POSITION_BOTTOM_LEFT == position) {
-            aMap.getUiSettings().setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_LEFT);
-        } else if (MapOptions.LOGO_POSITION_BOTTOM_CENTER == position) {
-            aMap.getUiSettings().setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_CENTER);
-        } else if (MapOptions.LOGO_POSITION_BOTTOM_RIGHT == position) {
-            aMap.getUiSettings().setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_RIGHT);
-        }
+
     }
 
-    public int getLogoPosition() {
-        if (currentMapType != MapManager.MAP_TYPE_AMAP) {
-            return MapOptions.UNKNOWN;
-        }
-        int type = aMap.getUiSettings().getLogoPosition();
-        if (AMapOptions.LOGO_POSITION_BOTTOM_LEFT == type) {
-            return MapOptions.LOGO_POSITION_BOTTOM_LEFT;
-        } else if (AMapOptions.LOGO_POSITION_BOTTOM_CENTER == type) {
-            return MapOptions.LOGO_POSITION_BOTTOM_CENTER;
-        } else if (AMapOptions.LOGO_POSITION_BOTTOM_RIGHT == type) {
-            return MapOptions.LOGO_POSITION_BOTTOM_RIGHT;
-        } else {
-            return MapOptions.UNKNOWN;
-        }
-    }
 }
