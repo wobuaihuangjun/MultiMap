@@ -48,7 +48,7 @@ public class MarkerOptions extends OverlayOptions {
     }
 
     public MarkerOptions title(String title) {
-        title = title;
+        this.title = title;
         return this;
     }
 

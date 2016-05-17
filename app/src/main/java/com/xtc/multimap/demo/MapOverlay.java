@@ -71,8 +71,9 @@ public class MapOverlay extends Activity {
                 .position(mapManager.getMapStatus().target)
                 .title("好好学习")
                 .icon(BitmapDescriptorFactory.fromResource(this, R.drawable.icon_marka))
-                .draggable(true));
-        marker.setRotate(90);// 设置marker旋转90度
+                .flat(true)
+                .draggable(false));
+        marker.setAnchor(0.5F,1.0F);
         marker.showInfoWindow();// 设置默认显示一个infowinfow
 
         if (circle != null) {
