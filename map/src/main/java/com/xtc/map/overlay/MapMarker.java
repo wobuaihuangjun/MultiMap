@@ -4,26 +4,26 @@ import android.os.Bundle;
 
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.xtc.map.ConvertUtil;
-import com.xtc.map.LatLng;
+import com.xtc.map.MapLatLng;
 
 import java.util.ArrayList;
 
 /**
- * 地图 Marker 覆盖物
+ * 地图 MapMarker 覆盖物
  * <p/>
  * Created by hzj on 2016/5/13.
  */
-public class Marker {
+public class MapMarker {
 
     private com.amap.api.maps.model.Marker gdMarker;
 
     private com.baidu.mapapi.map.Marker bdMarker;
 
-    public Marker(com.amap.api.maps.model.Marker gdMarker) {
+    public MapMarker(com.amap.api.maps.model.Marker gdMarker) {
         this.gdMarker = gdMarker;
     }
 
-    public Marker(com.baidu.mapapi.map.Marker bdMarker) {
+    public MapMarker(com.baidu.mapapi.map.Marker bdMarker) {
         this.bdMarker = bdMarker;
     }
 
@@ -55,7 +55,7 @@ public class Marker {
         }
     }
 
-    public void setIcon(BitmapDescriptor descriptor) {
+    public void setIcon(MapBitmap descriptor) {
         if (bdMarker != null) {
             bdMarker.setIcon(BitmapDescriptorFactory.fromBitmap(descriptor.bitmap));
         } else if (gdMarker != null) {
@@ -64,19 +64,19 @@ public class Marker {
         }
     }
 
-    public void setIcons(ArrayList<BitmapDescriptor> descriptors) {
+    public void setIcons(ArrayList<MapBitmap> descriptors) {
         if (descriptors == null) {
             return;
         }
         if (bdMarker != null) {
             ArrayList<com.baidu.mapapi.map.BitmapDescriptor> bdList = new ArrayList<>();
-            for (BitmapDescriptor bitmap : descriptors) {
+            for (MapBitmap bitmap : descriptors) {
                 bdList.add(BitmapDescriptorFactory.fromBitmap(bitmap.bitmap));
             }
             bdMarker.setIcons(bdList);
         } else if (gdMarker != null) {
             ArrayList<com.amap.api.maps.model.BitmapDescriptor> bdList = new ArrayList<>();
-            for (BitmapDescriptor bitmap : descriptors) {
+            for (MapBitmap bitmap : descriptors) {
                 bdList.add(com.amap.api.maps.model.BitmapDescriptorFactory
                         .fromBitmap(bitmap.bitmap));
             }
@@ -84,7 +84,7 @@ public class Marker {
         }
     }
 
-    public LatLng getPosition() {
+    public MapLatLng getPosition() {
         if (bdMarker != null) {
             return ConvertUtil.convertBdLatLng(bdMarker.getPosition());
         } else if (gdMarker != null) {
@@ -94,7 +94,7 @@ public class Marker {
         }
     }
 
-    public void setPosition(LatLng position) {
+    public void setPosition(MapLatLng position) {
         if (bdMarker != null) {
             bdMarker.setPosition(ConvertUtil.convertToBdLatLng(position));
         } else if (gdMarker != null) {
@@ -279,7 +279,7 @@ public class Marker {
     }
 
     /**
-     * 设置marker在屏幕的像素坐标。若用此方式，marker固定显示在屏幕上；如果想让标记随地图移动，可以使用 setPosition(LatLng) 改变。
+     * 设置marker在屏幕的像素坐标。若用此方式，marker固定显示在屏幕上；如果想让标记随地图移动，可以使用 setPosition(MapLatLng) 改变。
      *
      * @param x 横向像素点。
      * @param y 纵向像素点。

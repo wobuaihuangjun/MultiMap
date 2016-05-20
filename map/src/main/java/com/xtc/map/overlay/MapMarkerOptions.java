@@ -1,18 +1,18 @@
 package com.xtc.map.overlay;
 
 
-import com.xtc.map.LatLng;
+import com.xtc.map.MapLatLng;
 
 /**
  * 定义如何渲染Marker 的属性
  * <p/>
  * Created by hzj on 2016/5/16.
  */
-public class MarkerOptions extends OverlayOptions {
+public class MapMarkerOptions {
 
-    LatLng position;
+    MapLatLng position;
 
-    BitmapDescriptor icon;
+    MapBitmap icon;
 
     Float anchorX;
     Float anchorY;
@@ -26,48 +26,48 @@ public class MarkerOptions extends OverlayOptions {
     Boolean draggable;
     Boolean flat;
 
-    public MarkerOptions position(LatLng position) {
+    public MapMarkerOptions position(MapLatLng position) {
         this.position = position;
         return this;
     }
 
-    public MarkerOptions icon(BitmapDescriptor icon) {
+    public MapMarkerOptions icon(MapBitmap icon) {
         this.icon = icon;
         return this;
     }
 
-    public MarkerOptions anchor(Float anchorX, Float anchorY) {
+    public MapMarkerOptions anchor(Float anchorX, Float anchorY) {
         this.anchorX = anchorX;
         this.anchorY = anchorY;
         return this;
     }
 
-    public MarkerOptions period(Integer period) {
+    public MapMarkerOptions period(Integer period) {
         this.period = period;
         return this;
     }
 
-    public MarkerOptions title(String title) {
+    public MapMarkerOptions title(String title) {
         this.title = title;
         return this;
     }
 
-    public MarkerOptions zIndex(Float zIndex) {
+    public MapMarkerOptions zIndex(Float zIndex) {
         this.zIndex = zIndex;
         return this;
     }
 
-    public MarkerOptions visible(Boolean visible) {
+    public MapMarkerOptions visible(Boolean visible) {
         this.visible = visible;
         return this;
     }
 
-    public MarkerOptions draggable(Boolean draggable) {
+    public MapMarkerOptions draggable(Boolean draggable) {
         this.draggable = draggable;
         return this;
     }
 
-    public MarkerOptions flat(Boolean flat) {
+    public MapMarkerOptions flat(Boolean flat) {
         this.flat = flat;
         return this;
     }

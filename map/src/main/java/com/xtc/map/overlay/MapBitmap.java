@@ -7,11 +7,11 @@ import android.graphics.Bitmap;
  * <p/>
  * Created by hzj on 2016/5/16.
  */
-public class BitmapDescriptor {
+public class MapBitmap {
 
     Bitmap bitmap;
 
-    public BitmapDescriptor(Bitmap bitmap) {
+    public MapBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
 }

@@ -4,20 +4,20 @@ import android.location.Location;
 import android.view.MotionEvent;
 
 import com.amap.api.maps.model.Polyline;
-import com.xtc.map.LatLng;
-import com.xtc.map.status.MapStatus;
-import com.xtc.map.overlay.Marker;
-import com.xtc.map.Poi;
+import com.xtc.map.MapLatLng;
+import com.xtc.map.MapPoi;
+import com.xtc.map.overlay.MapMarker;
+import com.xtc.map.status.MapCamera;
 
 /**
  * 地图事件接口
  * <p/>
  * Created by hzj on 2016/5/13.
  */
-public class Map {
+public class MapInterface {
 
     public interface OnPOIClickListener {
-        void onPOIClick(Poi var1);
+        void onPOIClick(MapPoi var1);
     }
 
     public interface OnMapLoadedListener {
@@ -29,21 +29,21 @@ public class Map {
     }
 
     public interface OnMapClickListener {
-        void onMapClick(LatLng var1);
+        void onMapClick(MapLatLng var1);
     }
 
     public interface OnMapLongClickListener {
-        void onMapLongClick(LatLng var1);
+        void onMapLongClick(MapLatLng var1);
     }
 
     public interface OnMapStatusChangeListener {
-        void onMapStatusChange(MapStatus var1);
+        void onMapStatusChange(MapCamera var1);
 
-        void onMapStatusChangeFinish(MapStatus var1);
+        void onMapStatusChangeFinish(MapCamera var1);
     }
 
     public interface OnMarkerClickListener {
-        boolean onMarkerClick(Marker var1);
+        boolean onMarkerClick(MapMarker var1);
     }
 
     public interface OnPolylineClickListener {
@@ -51,15 +51,15 @@ public class Map {
     }
 
     public interface OnMarkerDragListener {
-        void onMarkerDragStart(Marker var1);
+        void onMarkerDragStart(MapMarker var1);
 
-        void onMarkerDrag(Marker var1);
+        void onMarkerDrag(MapMarker var1);
 
-        void onMarkerDragEnd(Marker var1);
+        void onMarkerDragEnd(MapMarker var1);
     }
 
     public interface OnInfoWindowClickListener {
-        void onInfoWindowClick(Marker var1);
+        void onInfoWindowClick(MapMarker var1);
     }
 
     public interface CancelableCallback {

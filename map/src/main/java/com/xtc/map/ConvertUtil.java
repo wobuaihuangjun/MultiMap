@@ -1,8 +1,9 @@
 package com.xtc.map;
 
 import com.amap.api.maps.model.CameraPosition;
-import com.baidu.mapapi.map.MapPoi;
-import com.xtc.map.status.MapStatus;
+import com.amap.api.maps.model.Poi;
+import com.baidu.mapapi.map.MapStatus;
+import com.xtc.map.status.MapCamera;
 
 /**
  * 地图类型转换
@@ -17,14 +18,14 @@ public class ConvertUtil {
      * @param bdLatLng 百度坐标
      * @return
      */
-    public static LatLng convertBdLatLng(com.baidu.mapapi.model.LatLng bdLatLng) {
+    public static MapLatLng convertBdLatLng(com.baidu.mapapi.model.LatLng bdLatLng) {
         if (bdLatLng == null) {
             return null;
         }
-        LatLng latLng = new LatLng();
-        latLng.latitude = bdLatLng.latitude;
-        latLng.longitude = bdLatLng.longitude;
-        return latLng;
+        MapLatLng mapLatLng = new MapLatLng();
+        mapLatLng.latitude = bdLatLng.latitude;
+        mapLatLng.longitude = bdLatLng.longitude;
+        return mapLatLng;
     }
 
     /**
@@ -33,99 +34,99 @@ public class ConvertUtil {
      * @param gdLatLng 百度坐标
      * @return
      */
-    public static LatLng convertGdLatLng(com.amap.api.maps.model.LatLng gdLatLng) {
+    public static MapLatLng convertGdLatLng(com.amap.api.maps.model.LatLng gdLatLng) {
         if (gdLatLng == null) {
             return null;
         }
-        LatLng latLng = new LatLng();
-        latLng.latitude = gdLatLng.latitude;
-        latLng.longitude = gdLatLng.longitude;
-        return latLng;
+        MapLatLng mapLatLng = new MapLatLng();
+        mapLatLng.latitude = gdLatLng.latitude;
+        mapLatLng.longitude = gdLatLng.longitude;
+        return mapLatLng;
     }
 
     /**
      * 转换为百度坐标
      *
-     * @param latLng 百度坐标
+     * @param mapLatLng 百度坐标
      * @return
      */
-    public static com.baidu.mapapi.model.LatLng convertToBdLatLng(LatLng latLng) {
-        if (latLng == null) {
+    public static com.baidu.mapapi.model.LatLng convertToBdLatLng(MapLatLng mapLatLng) {
+        if (mapLatLng == null) {
             return null;
         }
-        return new com.baidu.mapapi.model.LatLng(latLng.latitude, latLng.longitude);
+        return new com.baidu.mapapi.model.LatLng(mapLatLng.latitude, mapLatLng.longitude);
     }
 
     /**
      * 转换为高德坐标
      *
-     * @param latLng 百度坐标
+     * @param mapLatLng 百度坐标
      * @return
      */
-    public static com.amap.api.maps.model.LatLng convertToGdLatLng(LatLng latLng) {
-        if (latLng == null) {
+    public static com.amap.api.maps.model.LatLng convertToGdLatLng(MapLatLng mapLatLng) {
+        if (mapLatLng == null) {
             return null;
         }
-        return new com.amap.api.maps.model.LatLng(latLng.latitude, latLng.longitude);
+        return new com.amap.api.maps.model.LatLng(mapLatLng.latitude, mapLatLng.longitude);
     }
 
     /**
      * 转换高德地图状态
      *
      * @param cameraPosition 高德地图状态
-     * @return MapStatus
+     * @return MapCamera
      */
-    public static MapStatus convertGdMapStatus(CameraPosition cameraPosition) {
-        MapStatus mapStatus = new MapStatus();
+    public static MapCamera convertGdMapStatus(CameraPosition cameraPosition) {
+        MapCamera mapCamera = new MapCamera();
         if (cameraPosition != null) {
-            mapStatus.target = convertGdLatLng(cameraPosition.target);
-            mapStatus.tilt = cameraPosition.tilt;
-            mapStatus.zoom = cameraPosition.zoom;// TODO: 2016/5/13 可能需要转换
-            mapStatus.bearing = cameraPosition.bearing;
+            mapCamera.target = convertGdLatLng(cameraPosition.target);
+            mapCamera.tilt = cameraPosition.tilt;
+            mapCamera.zoom = cameraPosition.zoom;// TODO: 2016/5/13 可能需要转换
+            mapCamera.bearing = cameraPosition.bearing;
         }
-        return mapStatus;
+        return mapCamera;
     }
 
     /**
      * 转换百度地图状态
      *
      * @param bdMapStatus 百度地图状态
-     * @return MapStatus
+     * @return MapCamera
      */
-    public static MapStatus convertBdMapStatus(com.baidu.mapapi.map.MapStatus bdMapStatus) {
-        MapStatus mapStatus = new MapStatus();
+    public static MapCamera convertBdMapStatus(com.baidu.mapapi.map.MapStatus bdMapStatus) {
+        MapCamera mapCamera = new MapCamera();
         if (bdMapStatus != null) {
-            mapStatus.target = convertBdLatLng(bdMapStatus.target);
-            mapStatus.tilt = bdMapStatus.overlook;
-            mapStatus.zoom = bdMapStatus.zoom;// TODO: 2016/5/13 可能需要转换
-            mapStatus.bearing = bdMapStatus.rotate;
+            mapCamera.target = convertBdLatLng(bdMapStatus.target);
+            mapCamera.tilt = bdMapStatus.overlook;
+            mapCamera.zoom = bdMapStatus.zoom;// TODO: 2016/5/13 可能需要转换
+            mapCamera.bearing = bdMapStatus.rotate;
         }
-        return mapStatus;
+        return mapCamera;
     }
 
     /**
      * 转换高德地图状态
      *
-     * @param mapStatus 地图状态
+     * @param mapCamera 地图状态
      * @return CameraPosition
      */
-    public static CameraPosition convertToGdMapStatus(MapStatus mapStatus) {
-        if (mapStatus == null) {
+    public static CameraPosition convertToGdMapStatus(MapCamera mapCamera) {
+        if (mapCamera == null) {
             return null;
         }
         CameraPosition.Builder builder = CameraPosition.builder();
-        if (mapStatus.target != null) {
-            com.amap.api.maps.model.LatLng latLng = convertToGdLatLng(mapStatus.target);
+        if (mapCamera.target != null) {
+            com.amap.api.maps.model.LatLng latLng = convertToGdLatLng(mapCamera.target);
             builder.target(latLng);
         }
-        if (mapStatus.zoom != null) {
-            builder.zoom(mapStatus.zoom);
+        if (mapCamera.zoom != null) {
+            builder.zoom(mapCamera.zoom);
         }
-        if (mapStatus.tilt != null) {
-            builder.tilt(mapStatus.tilt);
+        if (mapCamera.tilt != null) {
+            builder.tilt(mapCamera.tilt);
         }
-        if (mapStatus.bearing != null) {
-            builder.bearing(mapStatus.bearing);
+        if (mapCamera.bearing != null) {
+            builder.bearing(mapCamera.bearing);
         }
         return builder.build();
     }
@@ -133,26 +134,26 @@ public class ConvertUtil {
     /**
      * 转换为百度地图状态
      *
-     * @param mapStatus 地图状态
+     * @param mapCamera 地图状态
      * @return 百度MapStatus
      */
-    public static com.baidu.mapapi.map.MapStatus convertToBdMapStatus(MapStatus mapStatus) {
-        if (mapStatus == null) {
+    public static MapStatus convertToBdMapStatus(MapCamera mapCamera) {
+        if (mapCamera == null) {
             return null;
         }
-        com.baidu.mapapi.map.MapStatus.Builder builder = new com.baidu.mapapi.map.MapStatus.Builder();
-        if (mapStatus.target != null) {
-            com.baidu.mapapi.model.LatLng latLng = convertToBdLatLng(mapStatus.target);
+        MapStatus.Builder builder = new com.baidu.mapapi.map.MapStatus.Builder();
+        if (mapCamera.target != null) {
+            com.baidu.mapapi.model.LatLng latLng = convertToBdLatLng(mapCamera.target);
             builder.target(latLng);
         }
-        if (mapStatus.zoom != null) {
-            builder.zoom(mapStatus.zoom);
+        if (mapCamera.zoom != null) {
+            builder.zoom(mapCamera.zoom);
         }
-        if (mapStatus.tilt != null) {
-            builder.overlook(mapStatus.tilt);
+        if (mapCamera.tilt != null) {
+            builder.overlook(mapCamera.tilt);
         }
-        if (mapStatus.bearing != null) {
-            builder.rotate(mapStatus.bearing);
+        if (mapCamera.bearing != null) {
+            builder.rotate(mapCamera.bearing);
         }
         return builder.build();
     }
@@ -160,14 +161,14 @@ public class ConvertUtil {
     /**
      * 转换百度Poi
      *
-     * @param mapPoi 百度Poi
-     * @return Poi
+     * @param mapMapPoi 百度Poi
+     * @return MapPoi
      */
-    public static Poi convertBdPoi(MapPoi mapPoi) {
-        Poi poi = new Poi();
-        if (mapPoi != null) {
-            poi.position = convertBdLatLng(mapPoi.getPosition());
-            poi.name = mapPoi.getName();
+    public static MapPoi convertBdPoi(com.baidu.mapapi.map.MapPoi mapMapPoi) {
+        MapPoi poi = new MapPoi();
+        if (mapMapPoi != null) {
+            poi.position = convertBdLatLng(mapMapPoi.getPosition());
+            poi.name = mapMapPoi.getName();
         }
         return poi;
     }
@@ -176,15 +177,15 @@ public class ConvertUtil {
      * 转换高德Poi
      *
      * @param gdPoi 高德Poi
-     * @return Poi
+     * @return MapPoi
      */
-    public static Poi convertGdPoi(com.amap.api.maps.model.Poi gdPoi) {
-        Poi poi = new Poi();
+    public static MapPoi convertGdPoi(Poi gdPoi) {
+        MapPoi mapPoi = new MapPoi();
         if (gdPoi != null) {
-            poi.position = convertGdLatLng(gdPoi.getCoordinate());
-            poi.name = gdPoi.getName();
+            mapPoi.position = convertGdLatLng(gdPoi.getCoordinate());
+            mapPoi.name = gdPoi.getName();
         }
-        return poi;
+        return mapPoi;
     }
 
 }

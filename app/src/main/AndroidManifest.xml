@@ -58,6 +58,7 @@
         <activity android:name=".demo.MapEventListener" />
         <activity android:name=".demo.MapLocation" />
         <activity android:name=".demo.MapOverlay" />
+        <activity android:name=".demo.GeocoderActivity" />
     </application>
 
 </manifest>

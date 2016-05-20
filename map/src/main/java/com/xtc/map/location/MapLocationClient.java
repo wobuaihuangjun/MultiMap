@@ -37,7 +37,6 @@ public class MapLocationClient {
         this.context = context;
         this.currentMapType = currentMapType;
         init();
-        aMapLocationClient = new AMapLocationClient(context);
     }
 
     private void init() {

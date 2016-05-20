@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import com.xtc.map.MapManager;
 import com.xtc.map.MapOptions;
 import com.xtc.map.MapUISettings;
-import com.xtc.map.location.Map;
+import com.xtc.map.location.MapInterface;
 import com.xtc.multimap.R;
 
 import butterknife.Bind;
@@ -61,7 +61,7 @@ public class SimpleMap extends Activity {
         if (mapManager.getCurrentMapType() == MapManager.MAP_TYPE_AMAP) {
             mapUISettings.setZoomPosition(MapOptions.ZOOM_POSITION_RIGHT_CENTER);
         }
-        mapManager.setOnMapLoadedListener(new Map.OnMapLoadedListener() {
+        mapManager.setOnMapLoadedListener(new MapInterface.OnMapLoadedListener() {
             @Override
             public void onMapLoaded() {
                 if (mapManager.getCurrentMapType() == MapManager.MAP_TYPE_BD) {

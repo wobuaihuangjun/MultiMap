@@ -7,14 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.xtc.map.LatLng;
+import com.xtc.map.MapLatLng;
 import com.xtc.map.MapManager;
-import com.xtc.map.location.Map;
+import com.xtc.map.location.MapInterface;
 import com.xtc.map.location.MapLocationClient;
 import com.xtc.map.location.MapLocationListener;
 import com.xtc.map.location.MapLocationOption;
-import com.xtc.map.status.MapStatus;
-import com.xtc.map.status.MapStatusUpdateFactory;
+import com.xtc.map.status.MapCamera;
+import com.xtc.map.status.MapCameraUpdateFactory;
 import com.xtc.multimap.R;
 
 import butterknife.Bind;
@@ -113,14 +113,14 @@ public class MapLocation extends Activity {
         }
     }
 
-    Map.OnMapStatusChangeListener listener = new Map.OnMapStatusChangeListener() {
+    MapInterface.OnMapStatusChangeListener listener = new MapInterface.OnMapStatusChangeListener() {
         @Override
-        public void onMapStatusChange(MapStatus var1) {
+        public void onMapStatusChange(MapCamera var1) {
             Log.i(TAG, "map status change");
         }
 
         @Override
-        public void onMapStatusChangeFinish(MapStatus var1) {
+        public void onMapStatusChangeFinish(MapCamera var1) {
             Log.i(TAG, "map status change finish");
         }
     };
@@ -133,9 +133,9 @@ public class MapLocation extends Activity {
                     mapLocationClient.stopLocation();
                 }
 
-                LatLng latLng = new LatLng(mapLocation.getLongitude(), mapLocation.getLatitude());
-                MapStatus status = new MapStatus.Builder().target(latLng).zoom(18).build();
-                mapManager.animateMapStatus(MapStatusUpdateFactory.newMapStatus(status), 1000);
+                MapLatLng mapLatLng = new MapLatLng(mapLocation.getLatitude(), mapLocation.getLongitude());
+                MapCamera status = new MapCamera.Builder().target(mapLatLng).zoom(18).build();
+                mapManager.animateMapStatus(MapCameraUpdateFactory.newMapStatus(status), 1000);
                 Log.i(TAG, mapLocation.toString());
             }
 

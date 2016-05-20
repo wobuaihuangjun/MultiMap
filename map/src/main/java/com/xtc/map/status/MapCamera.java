@@ -1,17 +1,17 @@
 package com.xtc.map.status;
 
-import com.xtc.map.LatLng;
+import com.xtc.map.MapLatLng;
 
 /**
  * 地图状态
  * <p/>
  * Created by hzj on 2016/5/13.
  */
-public class MapStatus {
+public class MapCamera {
     /**
      * 目标位置的屏幕中心点经纬度坐标。
      */
-    public LatLng target;
+    public MapLatLng target;
     /**
      * 目标可视区域的缩放级别
      */
@@ -26,27 +26,27 @@ public class MapStatus {
      */
     public Float bearing;
 
-    public MapStatus() {
+    public MapCamera() {
     }
 
-    public MapStatus(LatLng target, Float zoom, Float tilt, Float bearing) {
+    public MapCamera(MapLatLng target, Float zoom, Float tilt, Float bearing) {
         this.target = target;
         this.zoom = zoom;
         this.tilt = tilt;
         this.bearing = bearing;
     }
 
-    public static MapStatus.Builder builder() {
-        return new MapStatus.Builder();
+    public static MapCamera.Builder builder() {
+        return new MapCamera.Builder();
     }
 
-    public static MapStatus.Builder builder(MapStatus var0) {
-        return new MapStatus.Builder(var0);
+    public static MapCamera.Builder builder(MapCamera var0) {
+        return new MapCamera.Builder(var0);
     }
 
     @Override
     public String toString() {
-        return "MapStatus{" +
+        return "MapCamera{" +
                 "target=" + target +
                 ", zoom=" + zoom +
                 ", tilt=" + tilt +
@@ -55,7 +55,7 @@ public class MapStatus {
     }
 
     public static class Builder {
-        private LatLng target;
+        private MapLatLng target;
         private Float zoom;
         private Float tilt;
         private Float bearing;
@@ -63,35 +63,35 @@ public class MapStatus {
         public Builder() {
         }
 
-        public Builder(MapStatus var1) {
+        public Builder(MapCamera var1) {
             this.target(var1.target).bearing(var1.bearing).tilt(var1.tilt).zoom(var1.zoom);
         }
 
-        public MapStatus.Builder target(LatLng target) {
+        public MapCamera.Builder target(MapLatLng target) {
             this.target = target;
             return this;
         }
 
-        public MapStatus.Builder zoom(float zoom) {
+        public MapCamera.Builder zoom(float zoom) {
             this.zoom = zoom;
             return this;
         }
 
-        public MapStatus.Builder tilt(float tilt) {
+        public MapCamera.Builder tilt(float tilt) {
             this.tilt = tilt;
             return this;
         }
 
-        public MapStatus.Builder bearing(float bearing) {
+        public MapCamera.Builder bearing(float bearing) {
             this.bearing = bearing;
             return this;
         }
 
-        public MapStatus build() { // 构建，返回一个新对象
+        public MapCamera build() { // 构建，返回一个新对象
             if (this.target == null) {
                 throw new IllegalArgumentException("target can't null");
             }
-            return new MapStatus(this.target, this.zoom, this.tilt, this.bearing);
+            return new MapCamera(this.target, this.zoom, this.tilt, this.bearing);
         }
     }
 

@@ -2,24 +2,25 @@ package com.xtc.map.overlay;
 
 import android.support.annotation.NonNull;
 
+import com.amap.api.maps.model.CircleOptions;
+import com.amap.api.maps.model.MarkerOptions;
 import com.xtc.map.ConvertUtil;
-import com.xtc.map.LatLng;
 
 /**
  * OverlayOption转换
  * <p/>
  * Created by hzj on 2016/5/16.
  */
-public class OverlayConvert {
+public class ConvertOverlay {
 
     /**
      * 将MarkerOptions转换为高德类型
      *
-     * @param options MarkerOptions
+     * @param options MapMarkerOptions
      * @return 高德类型MarkerOptions
      */
-    public static com.amap.api.maps.model.MarkerOptions convertGdMarkerOptions(@NonNull MarkerOptions options) {
-        com.amap.api.maps.model.MarkerOptions gdOption = new com.amap.api.maps.model.MarkerOptions();
+    public static MarkerOptions convertGdMarkerOptions(@NonNull MapMarkerOptions options) {
+        MarkerOptions gdOption = new com.amap.api.maps.model.MarkerOptions();
         if (options.position != null) {
             gdOption.position(ConvertUtil.convertToGdLatLng(options.position));
         }
@@ -51,10 +52,10 @@ public class OverlayConvert {
     /**
      * 将MarkerOptions转换为百度类型
      *
-     * @param options MarkerOptions
+     * @param options MapMarkerOptions
      * @return 百度类型MarkerOptions
      */
-    public static com.baidu.mapapi.map.MarkerOptions convertBdMarkerOptions(@NonNull MarkerOptions options) {
+    public static com.baidu.mapapi.map.MarkerOptions convertBdMarkerOptions(@NonNull MapMarkerOptions options) {
         com.baidu.mapapi.map.MarkerOptions bdOption = new com.baidu.mapapi.map.MarkerOptions();
         if (options.position != null) {
             bdOption.position(ConvertUtil.convertToBdLatLng(options.position));
@@ -84,8 +85,8 @@ public class OverlayConvert {
         return bdOption;
     }
 
-    public static com.amap.api.maps.model.CircleOptions convertGdCircleOptions(@NonNull CircleOptions options) {
-        com.amap.api.maps.model.CircleOptions gdOption = new com.amap.api.maps.model.CircleOptions();
+    public static CircleOptions convertGdCircleOptions(@NonNull MapCircleOptions options) {
+        CircleOptions gdOption = new com.amap.api.maps.model.CircleOptions();
         if (options.center != null) {
             gdOption.center(ConvertUtil.convertToGdLatLng(options.center));
         }
@@ -108,7 +109,7 @@ public class OverlayConvert {
         return gdOption;
     }
 
-    public static com.baidu.mapapi.map.CircleOptions convertBdCircleOptions(@NonNull CircleOptions options) {
+    public static com.baidu.mapapi.map.CircleOptions convertBdCircleOptions(@NonNull MapCircleOptions options) {
         com.baidu.mapapi.map.CircleOptions bdOption = new com.baidu.mapapi.map.CircleOptions();
         if (options.center != null) {
             bdOption.center(ConvertUtil.convertToBdLatLng(options.center));

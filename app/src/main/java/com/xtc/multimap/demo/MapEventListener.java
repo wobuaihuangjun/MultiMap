@@ -7,12 +7,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.xtc.map.status.MapStatus;
-import com.xtc.map.status.MapStatusUpdateFactory;
+import com.xtc.map.status.MapCamera;
+import com.xtc.map.status.MapCameraUpdateFactory;
 import com.xtc.multimap.R;
-import com.xtc.map.LatLng;
+import com.xtc.map.MapLatLng;
 import com.xtc.map.MapManager;
-import com.xtc.map.location.Map;
+import com.xtc.map.location.MapInterface;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,44 +50,44 @@ public class MapEventListener extends Activity {
     }
 
     private void setMapEventListener() {
-        mapManager.setOnMapLoadedListener(new Map.OnMapLoadedListener() {
+        mapManager.setOnMapLoadedListener(new MapInterface.OnMapLoadedListener() {
             @Override
             public void onMapLoaded() {
                 Log.i(TAG, "setOnMapLoadedListener");
-                mapManager.updateMapStatus(MapStatusUpdateFactory.zoomTo(16));
+                mapManager.updateMapStatus(MapCameraUpdateFactory.zoomTo(16));
             }
         });
 
-        mapManager.setOnMapClickListener(new Map.OnMapClickListener() {
+        mapManager.setOnMapClickListener(new MapInterface.OnMapClickListener() {
             @Override
-            public void onMapClick(LatLng var1) {
+            public void onMapClick(MapLatLng var1) {
                 Log.i(TAG, "setOnMapClickListener");
-                mapManager.animateMapStatus(MapStatusUpdateFactory.newLatLng(var1), 1000);
+                mapManager.animateMapStatus(MapCameraUpdateFactory.newLatLng(var1), 1000);
             }
         });
 
-        mapManager.setOnMapLongClickListener(new Map.OnMapLongClickListener() {
+        mapManager.setOnMapLongClickListener(new MapInterface.OnMapLongClickListener() {
             @Override
-            public void onMapLongClick(LatLng var1) {
+            public void onMapLongClick(MapLatLng var1) {
                 Log.i(TAG, "setOnMapLongClickListener");
             }
         });
 
-        mapManager.setOnMapTouchListener(new Map.OnMapTouchListener() {
+        mapManager.setOnMapTouchListener(new MapInterface.OnMapTouchListener() {
             @Override
             public void onTouch(MotionEvent var1) {
                 Log.i(TAG, "setOnMapTouchListener");
             }
         });
 
-        mapManager.setOnMapStatusChangeListener(new Map.OnMapStatusChangeListener() {
+        mapManager.setOnMapStatusChangeListener(new MapInterface.OnMapStatusChangeListener() {
             @Override
-            public void onMapStatusChange(MapStatus var1) {
+            public void onMapStatusChange(MapCamera var1) {
                 Log.i(TAG, "onMapStatusChange");
             }
 
             @Override
-            public void onMapStatusChangeFinish(MapStatus var1) {
+            public void onMapStatusChangeFinish(MapCamera var1) {
                 Log.i(TAG, "onMapStatusChangeFinish");
             }
         });

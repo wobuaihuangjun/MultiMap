@@ -54,7 +54,10 @@ public class MainActivity extends Activity {
                     "实现地图事件的回调监听", MapEventListener.class),
 
             new DemoInfo("地图覆盖物",
-                    "实现地图覆盖物的相关实例", MapOverlay.class)
+                    "实现地图覆盖物的相关实例", MapOverlay.class),
+
+            new DemoInfo("地理编码功能",
+                    "地址信息与坐标直接的转换", GeocoderActivity.class)
 
     };
 

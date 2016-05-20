@@ -7,7 +7,6 @@ import com.amap.api.maps.AMap;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BaiduMapOptions;
 import com.baidu.mapapi.map.MapView;
-import com.xtc.map.status.MapStatus;
 
 
 /**

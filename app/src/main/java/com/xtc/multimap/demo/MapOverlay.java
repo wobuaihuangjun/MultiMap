@@ -9,11 +9,11 @@ import android.widget.RelativeLayout;
 
 import com.xtc.map.MapManager;
 import com.xtc.map.MapUISettings;
-import com.xtc.map.overlay.BitmapDescriptorFactory;
-import com.xtc.map.overlay.Circle;
-import com.xtc.map.overlay.CircleOptions;
-import com.xtc.map.overlay.Marker;
-import com.xtc.map.overlay.MarkerOptions;
+import com.xtc.map.overlay.MapBitmapFactory;
+import com.xtc.map.overlay.MapCircle;
+import com.xtc.map.overlay.MapCircleOptions;
+import com.xtc.map.overlay.MapMarker;
+import com.xtc.map.overlay.MapMarkerOptions;
 import com.xtc.map.overlay.Stroke;
 import com.xtc.multimap.R;
 
@@ -40,7 +40,7 @@ public class MapOverlay extends Activity {
         setContentView(R.layout.simple_map);
         ButterKnife.bind(this);
 
-        changeMapMode.setText("Add Marker");
+        changeMapMode.setText("Add MapMarker");
 
         mapManager = new MapManager(this);
 
@@ -60,26 +60,26 @@ public class MapOverlay extends Activity {
         addMarker();
     }
 
-    Marker marker;
-    Circle circle;
+    MapMarker mapMarker;
+    MapCircle mapCircle;
 
     private void addMarker() {
-        if (marker != null) {
-            marker.remove();
+        if (mapMarker != null) {
+            mapMarker.remove();
         }
-        marker = mapManager.addMarker(new MarkerOptions()
+        mapMarker = mapManager.addMarker(new MapMarkerOptions()
                 .position(mapManager.getMapStatus().target)
                 .title("好好学习")
-                .icon(BitmapDescriptorFactory.fromResource(this, R.drawable.icon_marka))
+                .icon(MapBitmapFactory.fromResource(this, R.drawable.icon_marka))
                 .flat(true)
                 .draggable(false));
-        marker.setAnchor(0.5F,1.0F);
-        marker.showInfoWindow();// 设置默认显示一个infowinfow
+        mapMarker.setAnchor(0.5F,1.0F);
+        mapMarker.showInfoWindow();// 设置默认显示一个infowinfow
 
-        if (circle != null) {
-            circle.remove();
+        if (mapCircle != null) {
+            mapCircle.remove();
         }
-        circle = mapManager.addCircle(new CircleOptions()
+        mapCircle = mapManager.addCircle(new MapCircleOptions()
                 .center(mapManager.getMapStatus().target)
                 .radius(4000.0)
                 .fillColor(Color.argb(150, 1, 1, 1))

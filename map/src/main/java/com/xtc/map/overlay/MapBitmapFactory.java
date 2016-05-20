@@ -16,12 +16,12 @@ import java.io.InputStream;
  * <p/>
  * Created by hzj on 2016/5/16.
  */
-public class BitmapDescriptorFactory {
+public class MapBitmapFactory {
 
-    public BitmapDescriptorFactory() {
+    public MapBitmapFactory() {
     }
 
-    public static BitmapDescriptor fromAsset(Context var1, String var0) {
+    public static MapBitmap fromAsset(Context var1, String var0) {
         if (var1 == null) {
             return null;
         } else {
@@ -30,7 +30,7 @@ public class BitmapDescriptorFactory {
                 InputStream var3 = null;
                 var3 = var2.open(var0);
                 Bitmap var4 = BitmapFactory.decodeStream(var3);
-                BitmapDescriptor var5 = null;
+                MapBitmap var5 = null;
                 var3.close();
                 var5 = fromBitmap(var4);
                 return var5;
@@ -42,16 +42,16 @@ public class BitmapDescriptorFactory {
     }
 
 
-    public static BitmapDescriptor fromBitmap(Bitmap var0) {
+    public static MapBitmap fromBitmap(Bitmap var0) {
         if (var0 == null) {
             return null;
         } else {
-            BitmapDescriptor var1 = new BitmapDescriptor(var0);
+            MapBitmap var1 = new MapBitmap(var0);
             return var1;
         }
     }
 
-    public static BitmapDescriptor fromFile(Context var1, String var0) {
+    public static MapBitmap fromFile(Context var1, String var0) {
         if (var0 != null && !var0.equals("")) {
             try {
                 if (var1 != null) {
@@ -59,7 +59,7 @@ public class BitmapDescriptorFactory {
                     Bitmap var3 = BitmapFactory.decodeStream(var2);
                     var2.close();
                     if (var3 != null) {
-                        BitmapDescriptor var4 = fromBitmap(var3);
+                        MapBitmap var4 = fromBitmap(var3);
                         return var4;
                     }
                 }
@@ -75,23 +75,23 @@ public class BitmapDescriptorFactory {
         }
     }
 
-    public static BitmapDescriptor fromPath(String var0) {
+    public static MapBitmap fromPath(String var0) {
         Bitmap var1 = BitmapFactory.decodeFile(var0);
         if (var1 != null && var1 != null) {
-            BitmapDescriptor var2 = fromBitmap(var1);
+            MapBitmap var2 = fromBitmap(var1);
             return var2;
         } else {
             return null;
         }
     }
 
-    public static BitmapDescriptor fromResource(Context var1, int var0) {
+    public static MapBitmap fromResource(Context var1, int var0) {
         if (var1 != null) {
             Bitmap var2 = BitmapFactory.decodeResource(var1.getResources(), var0);
             if (var2 == null) {
                 return null;
             } else {
-                BitmapDescriptor var3 = fromBitmap(var2);
+                MapBitmap var3 = fromBitmap(var2);
                 return var3;
             }
         } else {
@@ -99,7 +99,7 @@ public class BitmapDescriptorFactory {
         }
     }
 
-    public static BitmapDescriptor fromView(View var0) {
+    public static MapBitmap fromView(View var0) {
         if (var0 == null) {
             return null;
         } else {
@@ -108,7 +108,7 @@ public class BitmapDescriptorFactory {
             var0.layout(0, 0, var0.getMeasuredWidth(), var0.getMeasuredHeight());
             var0.buildDrawingCache();
             Bitmap var1 = var0.getDrawingCache();
-            BitmapDescriptor var2 = fromBitmap(var1);
+            MapBitmap var2 = fromBitmap(var1);
             var0.destroyDrawingCache();
             return var2;
         }

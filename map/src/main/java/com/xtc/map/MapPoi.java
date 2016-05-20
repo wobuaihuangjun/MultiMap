@@ -5,17 +5,17 @@ package com.xtc.map;
  * <p/>
  * Created by hzj on 2016/5/13.
  */
-public class Poi {
+public class MapPoi {
 
-    public LatLng position;
+    public MapLatLng position;
     public String name;
 
-    public Poi() {
+    public MapPoi() {
     }
 
     @Override
     public String toString() {
-        return "Poi{" +
+        return "MapPoi{" +
                 "position=" + position +
                 ", name='" + name + '\'' +
                 '}';

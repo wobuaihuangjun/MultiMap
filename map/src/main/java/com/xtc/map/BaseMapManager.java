@@ -14,16 +14,14 @@ import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
-import com.xtc.map.location.Map;
-import com.xtc.map.overlay.Circle;
-import com.xtc.map.overlay.CircleOptions;
-import com.xtc.map.overlay.Marker;
-import com.xtc.map.overlay.MarkerOptions;
-import com.xtc.map.overlay.OverlayConvert;
-import com.xtc.map.status.MapStatus;
-import com.xtc.map.status.MapStatusUpdate;
-
-import java.util.UUID;
+import com.xtc.map.location.MapInterface;
+import com.xtc.map.overlay.MapCircle;
+import com.xtc.map.overlay.MapCircleOptions;
+import com.xtc.map.overlay.MapMarker;
+import com.xtc.map.overlay.MapMarkerOptions;
+import com.xtc.map.overlay.ConvertOverlay;
+import com.xtc.map.status.MapCamera;
+import com.xtc.map.status.MapCameraUpdate;
 
 /**
  * 地图管理的基类
@@ -114,14 +112,14 @@ public abstract class BaseMapManager {
      * 加一个Marker（标记）到地图上
      *
      * @param options 一个MarkerOptions 对象，它定义了如何渲染Marker 的属性。
-     * @return 返回一个 Marker 对象，此对象已经加到地图上。
+     * @return 返回一个 MapMarker 对象，此对象已经加到地图上。
      */
-    public Marker addMarker(MarkerOptions options) {
+    public MapMarker addMarker(MapMarkerOptions options) {
         if (currentMapType == MapManager.MAP_TYPE_AMAP) {
-            return new Marker(gdMap.addMarker(OverlayConvert.convertGdMarkerOptions(options)));
+            return new MapMarker(gdMap.addMarker(ConvertOverlay.convertGdMarkerOptions(options)));
         } else {
-            return new Marker((com.baidu.mapapi.map.Marker) bdMap
-                    .addOverlay(OverlayConvert.convertBdMarkerOptions(options)));
+            return new MapMarker((com.baidu.mapapi.map.Marker) bdMap
+                    .addOverlay(ConvertOverlay.convertBdMarkerOptions(options)));
         }
     }
 
@@ -131,16 +129,16 @@ public abstract class BaseMapManager {
      * @param options 设置圆形初始化属性的CircleOptions对象
      * @return 一个Circle对象。
      */
-    public final Circle addCircle(CircleOptions options) {
+    public final MapCircle addCircle(MapCircleOptions options) {
         if (currentMapType == MapManager.MAP_TYPE_AMAP) {
-            return new Circle(gdMap.addCircle(OverlayConvert.convertGdCircleOptions(options)));
+            return new MapCircle(gdMap.addCircle(ConvertOverlay.convertGdCircleOptions(options)));
         } else {
             com.baidu.mapapi.map.Circle circle = (com.baidu.mapapi.map.Circle) bdMap
-                    .addOverlay(OverlayConvert.convertBdCircleOptions(options));
+                    .addOverlay(ConvertOverlay.convertBdCircleOptions(options));
             Bundle bundle = new Bundle();
             bundle.putString("id", UUIDUtil.getUUID());
             circle.setExtraInfo(bundle);
-            return new Circle(circle);
+            return new MapCircle(circle);
         }
     }
 
@@ -149,7 +147,7 @@ public abstract class BaseMapManager {
      *
      * @return 地图的当前状态
      */
-    public MapStatus getMapStatus() {
+    public MapCamera getMapStatus() {
         if (currentMapType == MapManager.MAP_TYPE_AMAP) {
             return ConvertUtil.convertGdMapStatus(gdMap.getCameraPosition());
         } else {
@@ -162,8 +160,8 @@ public abstract class BaseMapManager {
      *
      * @param var1 地图状态将要发生的变化
      */
-    public void updateMapStatus(MapStatusUpdate var1) {
-        MapStatus status = var1.getMapStatus(getMapStatus());
+    public void updateMapStatus(MapCameraUpdate var1) {
+        MapCamera status = var1.getMapStatus(getMapStatus());
         if (bdMap != null) {
             com.baidu.mapapi.map.MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(
                     ConvertUtil.convertToBdMapStatus(status));
@@ -181,8 +179,8 @@ public abstract class BaseMapManager {
      *
      * @param var1 定义转换的目的地位置
      */
-    public void animateMapStatus(MapStatusUpdate var1) {
-        MapStatus status = var1.getMapStatus(getMapStatus());
+    public void animateMapStatus(MapCameraUpdate var1) {
+        MapCamera status = var1.getMapStatus(getMapStatus());
         if (bdMap != null) {
             com.baidu.mapapi.map.MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(
                     ConvertUtil.convertToBdMapStatus(status));
@@ -202,8 +200,8 @@ public abstract class BaseMapManager {
      * @param var1 地图状态将要发生的变化
      * @param var2 动画时间
      */
-    public void animateMapStatus(MapStatusUpdate var1, int var2) {
-        MapStatus status = var1.getMapStatus(getMapStatus());
+    public void animateMapStatus(MapCameraUpdate var1, int var2) {
+        MapCamera status = var1.getMapStatus(getMapStatus());
         if (bdMap != null) {
             com.baidu.mapapi.map.MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(
                     ConvertUtil.convertToBdMapStatus(status));
@@ -217,7 +215,7 @@ public abstract class BaseMapManager {
 
     }
 
-    public final void setOnMapStatusChangeListener(@NonNull final Map.OnMapStatusChangeListener listener) {
+    public final void setOnMapStatusChangeListener(@NonNull final MapInterface.OnMapStatusChangeListener listener) {
         if (bdMap != null) {
             bdMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
                 @Override
@@ -251,7 +249,7 @@ public abstract class BaseMapManager {
         }
     }
 
-    public final void setOnMapClickListener(@NonNull final Map.OnMapClickListener listener) {
+    public final void setOnMapClickListener(@NonNull final MapInterface.OnMapClickListener listener) {
         if (bdMap != null) {
             bdMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
                 @Override
@@ -275,7 +273,7 @@ public abstract class BaseMapManager {
         }
     }
 
-    public final void setOnMapTouchListener(@NonNull final Map.OnMapTouchListener listener) {
+    public final void setOnMapTouchListener(@NonNull final MapInterface.OnMapTouchListener listener) {
         if (bdMap != null) {
             bdMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
                 @Override
@@ -294,7 +292,7 @@ public abstract class BaseMapManager {
         }
     }
 
-    public final void setOnPOIClickListener(@NonNull final Map.OnPOIClickListener listener) {
+    public final void setOnPOIClickListener(@NonNull final MapInterface.OnPOIClickListener listener) {
         if (bdMap != null) {
             bdMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
                 @Override
@@ -319,7 +317,7 @@ public abstract class BaseMapManager {
         }
     }
 
-    public final void setOnMapLongClickListener(@NonNull final Map.OnMapLongClickListener listener) {
+    public final void setOnMapLongClickListener(@NonNull final MapInterface.OnMapLongClickListener listener) {
         if (bdMap != null) {
             bdMap.setOnMapLongClickListener(new BaiduMap.OnMapLongClickListener() {
                 @Override
@@ -338,12 +336,12 @@ public abstract class BaseMapManager {
         }
     }
 
-    public final void setOnMarkerClickListener(@NonNull final Map.OnMarkerClickListener listener) {
+    public final void setOnMarkerClickListener(@NonNull final MapInterface.OnMarkerClickListener listener) {
         if (bdMap != null) {
             bdMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(com.baidu.mapapi.map.Marker marker) {
-                    listener.onMarkerClick(new Marker(marker));
+                    listener.onMarkerClick(new MapMarker(marker));
                     return false;
                 }
             });
@@ -352,29 +350,29 @@ public abstract class BaseMapManager {
             gdMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(com.amap.api.maps.model.Marker marker) {
-                    listener.onMarkerClick(new Marker(marker));
+                    listener.onMarkerClick(new MapMarker(marker));
                     return false;
                 }
             });
         }
     }
 
-    public final void setOnMarkerDragListener(@NonNull final Map.OnMarkerDragListener listener) {
+    public final void setOnMarkerDragListener(@NonNull final MapInterface.OnMarkerDragListener listener) {
         if (bdMap != null) {
             bdMap.setOnMarkerDragListener(new BaiduMap.OnMarkerDragListener() {
                 @Override
                 public void onMarkerDrag(com.baidu.mapapi.map.Marker marker) {
-                    listener.onMarkerDrag(new Marker(marker));
+                    listener.onMarkerDrag(new MapMarker(marker));
                 }
 
                 @Override
                 public void onMarkerDragEnd(com.baidu.mapapi.map.Marker marker) {
-                    listener.onMarkerDragEnd(new Marker(marker));
+                    listener.onMarkerDragEnd(new MapMarker(marker));
                 }
 
                 @Override
                 public void onMarkerDragStart(com.baidu.mapapi.map.Marker marker) {
-                    listener.onMarkerDragStart(new Marker(marker));
+                    listener.onMarkerDragStart(new MapMarker(marker));
                 }
             });
         }
@@ -382,23 +380,23 @@ public abstract class BaseMapManager {
             gdMap.setOnMarkerDragListener(new AMap.OnMarkerDragListener() {
                 @Override
                 public void onMarkerDragStart(com.amap.api.maps.model.Marker marker) {
-                    listener.onMarkerDragStart(new Marker(marker));
+                    listener.onMarkerDragStart(new MapMarker(marker));
                 }
 
                 @Override
                 public void onMarkerDrag(com.amap.api.maps.model.Marker marker) {
-                    listener.onMarkerDrag(new Marker(marker));
+                    listener.onMarkerDrag(new MapMarker(marker));
                 }
 
                 @Override
                 public void onMarkerDragEnd(com.amap.api.maps.model.Marker marker) {
-                    listener.onMarkerDragEnd(new Marker(marker));
+                    listener.onMarkerDragEnd(new MapMarker(marker));
                 }
             });
         }
     }
 
-    public final void setOnMapLoadedListener(@NonNull final Map.OnMapLoadedListener listener) {
+    public final void setOnMapLoadedListener(@NonNull final MapInterface.OnMapLoadedListener listener) {
         if (bdMap != null) {
             bdMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
                 @Override
@@ -418,10 +416,10 @@ public abstract class BaseMapManager {
     }
 
     @Deprecated
-    public final void setOnInfoWindowClickListener(@NonNull final Map.OnInfoWindowClickListener listener) {
+    public final void setOnInfoWindowClickListener(@NonNull final MapInterface.OnInfoWindowClickListener listener) {
     }
 
     @Deprecated
-    public final void setOnPolylineClickListener(Map.OnPolylineClickListener var1) {
+    public final void setOnPolylineClickListener(MapInterface.OnPolylineClickListener var1) {
     }
 }

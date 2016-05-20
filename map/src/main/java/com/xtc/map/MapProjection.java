@@ -37,7 +37,7 @@ public class MapProjection {
      * @param point 屏幕坐标 如果传入null 则返回null
      * @return 地理坐标
      */
-    public LatLng fromScreenLocation(Point point) {
+    public MapLatLng fromScreenLocation(Point point) {
         if (currentMapType == MapManager.MAP_TYPE_AMAP) {
             return ConvertUtil.convertGdLatLng(gdMap.getProjection().fromScreenLocation(point));
         } else {
@@ -51,7 +51,7 @@ public class MapProjection {
      * @param location location - 地理坐标 如果传入 null 则返回null
      * @return 屏幕坐标
      */
-    public Point toScreenLocation(LatLng location) {
+    public Point toScreenLocation(MapLatLng location) {
         if (currentMapType == MapManager.MAP_TYPE_AMAP) {
             return gdMap.getProjection().toScreenLocation(ConvertUtil.convertToGdLatLng(location));
         } else {

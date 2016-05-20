@@ -3,24 +3,24 @@ package com.xtc.map.overlay;
 import android.os.Bundle;
 
 import com.xtc.map.ConvertUtil;
-import com.xtc.map.LatLng;
+import com.xtc.map.MapLatLng;
 
 /**
  * 定义在地图上画一个圆的类
  * <p/>
  * Created by hzj on 2016/5/16.
  */
-public class Circle {
+public class MapCircle {
 
     private com.amap.api.maps.model.Circle gdCircle;
 
     private com.baidu.mapapi.map.Circle bdCircle;
 
-    public Circle(com.amap.api.maps.model.Circle gdCircle) {
+    public MapCircle(com.amap.api.maps.model.Circle gdCircle) {
         this.gdCircle = gdCircle;
     }
 
-    public Circle(com.baidu.mapapi.map.Circle bdCircle) {
+    public MapCircle(com.baidu.mapapi.map.Circle bdCircle) {
         this.bdCircle = bdCircle;
     }
 
@@ -30,7 +30,7 @@ public class Circle {
      *
      * @return 圆形的圆心经纬度坐标。
      */
-    public LatLng getCenter() {
+    public MapLatLng getCenter() {
         if (bdCircle != null) {
             return ConvertUtil.convertBdLatLng(bdCircle.getCenter());
         } else if (gdCircle != null) {
@@ -45,7 +45,7 @@ public class Circle {
      *
      * @param center 圆形的圆心经纬度坐标。
      */
-    public void setCenter(LatLng center) {
+    public void setCenter(MapLatLng center) {
         if (bdCircle != null) {
             bdCircle.setCenter(ConvertUtil.convertToBdLatLng(center));
         } else if (gdCircle != null) {
