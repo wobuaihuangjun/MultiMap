@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/change_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="切换地图" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="北京" />
+
+        <EditText
+            android:id="@+id/key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="海淀区上地十街10号" />
+
+        <Button
+            android:id="@+id/key_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KeySearch" />
+
+        <Button
+            android:id="@+id/nearby_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NearbySearch" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

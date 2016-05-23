@@ -105,6 +105,7 @@ public class ConvertGeoCode {
      * 转换高德地理编码结果
      *
      * @param result 高德地理编码结果
+     * @param rCode  高德地理编码错误码
      * @return 地理编码结果
      */
     public static CodeResult convertGdGeoCodeResult(GeocodeResult result, int rCode) {
@@ -130,6 +131,12 @@ public class ConvertGeoCode {
         return codeResult;
     }
 
+    /**
+     * 转换百度逆地理编码结果
+     *
+     * @param result 百度逆地理编码结果
+     * @return 逆地理编码结果
+     */
     public static ReCodeResult convertBdReCodeResult(ReverseGeoCodeResult result) {
         ReCodeResult reCodeResult = new ReCodeResult();
         if (result == null) {
@@ -166,6 +173,13 @@ public class ConvertGeoCode {
         return reCodeResult;
     }
 
+    /**
+     * 转换高德逆地理编码结果
+     *
+     * @param result 高德逆地理编码结果
+     * @param rCode  高德逆地理编码错误码
+     * @return 逆地理编码结果
+     */
     public static ReCodeResult convertGdReCodeResult(RegeocodeResult result, int rCode) {
         ReCodeResult reCodeResult = new ReCodeResult();
         if (rCode != 1000) {

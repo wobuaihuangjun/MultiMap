@@ -58,6 +58,14 @@ public abstract class BaseMapManager {
      */
     protected abstract void mapChanged();
 
+    public BaiduMap getBdMap() {
+        return bdMap;
+    }
+
+    public AMap getGdMap() {
+        return gdMap;
+    }
+
     /**
      * 如果是显示高德地图，在创建mapview后此方法必须调用
      */

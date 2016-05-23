@@ -57,7 +57,10 @@ public class MainActivity extends Activity {
                     "实现地图覆盖物的相关实例", MapOverlay.class),
 
             new DemoInfo("地理编码功能",
-                    "地址信息与坐标直接的转换", GeocoderActivity.class)
+                    "地址信息与坐标直接的转换", GeocoderActivity.class),
+
+            new DemoInfo("Poi搜索功能",
+                    "Poi地图搜索功能", PoiSearch.class)
 
     };
 
